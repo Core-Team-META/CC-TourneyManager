@@ -7,10 +7,16 @@ local Tournament = require(prop_TournamentMgr)
 local tourney = Tournament.New()
 
 
+local player = nil
+while player == nil do
+  player = Game.GetPlayers()[1]
+  Task.Wait()
+end
 
-t:AddAllPlayers()
+tourney:AddAllPlayers()
+tourney:AddPlayer(Game.GetPlayers()[1])
 
-
+--[[
 while not tourney:IsDone() do
   t:GenerateMatches()
 
@@ -27,3 +33,4 @@ print("Rankings are:")
 for k,v in pairs(tournament:GetRankings()) do
   print(v.player.name, v.score)
 end
+]]
