@@ -16,7 +16,7 @@ function PlayerEntry.New(playerId)
 end
 
 
-function PlayerEntry.IsInMatch(self)
+function PlayerEntry:IsInAMatch()
   return #self.matchHistory > 0 and not self.matchHistory[#self.matchHistory].isComplete
 end
 
@@ -49,12 +49,12 @@ function Match.New(tournament, playerIdList, round, progressingPlayers)
   return newMatch
 end
 
-function Match.StartMatch(self)
+function Match:StartMatch()
   self.startTime = time()
   self.isComplete = false
 end
 
-function Match.EndMatch(self, scores)
+function Match:EndMatch()
   print("Match complete!", self.id)
   self.endTime = time()
   self.isComplete = true
@@ -71,14 +71,14 @@ function Match.EndMatch(self, scores)
   end
 end
 
-function Match.ContainsPlayer(self, playerId)
+function Match:ContainsPlayer(playerId)
   for k,v in pairs(self.playerIds) do
     if v == playerId then return true end
   end
   return false
 end
 
-function Match.SubmitMatchScore(self, playerId, score)
+function Match:SubmitMatchScore(playerId, score)
   if not self:ContainsPlayer(playerId) then
     print(playerId, self.id)
     warn("Tried to submit a score for a player not in the match!")
@@ -92,7 +92,7 @@ function Match.SubmitMatchScore(self, playerId, score)
   end
 end
 
-function Match.HaveAllScoresBeenSubmitted(self)
+function Match:HaveAllScoresBeenSubmitted()
   for k,v in pairs(self.playerIds) do
     if self.playerScores[v] == nil then return false end
   end
@@ -119,7 +119,7 @@ function Tournament.New(defaultMatchSize, maxWinners)
   return newTournament
 end
 
-function Tournament.GetActivePlayers(self)
+function Tournament:GetActivePlayers()
   local result = {}
   for k,v in pairs(self.players) do
     if not v.isEliminated then table.insert(result, v.playerId) end
@@ -127,7 +127,7 @@ function Tournament.GetActivePlayers(self)
   return result
 end
 
-function Tournament.IsPlayerEliminated(self, playerId)
+function Tournament:IsPlayerEliminated(playerId)
   print("checking", playerId)
    print(CoreDebug.GetStackTrace())
   if self.players[playerId] == nil then
@@ -139,26 +139,26 @@ function Tournament.IsPlayerEliminated(self, playerId)
 end
 
 
-function Tournament.GetNewMatchId(self)
+function Tournament:GetNewMatchId()
   self.nextMatchId = self.nextMatchId + 1
   return self.nextMatchId - 1
 end
 
-function Tournament.AddAllPlayers(self)
+function Tournament:AddAllPlayers()
   for k,v in pairs(Game.GetPlayers()) do
     self:AddPlayer(v.id)
   end
 end
 
 
-function Tournament.AddDummyPlayers(self, count)
+function Tournament:AddDummyPlayers(count)
   for i = 1, count do
     self:AddPlayer(string.format("testPlayer_%d", self.playerCount))
   end
 end
 
 
-function Tournament.AddPlayer(self, playerId)
+function Tournament:AddPlayer(playerId)
   if self.players[playerId] == nil then
     self.players[playerId] = PlayerEntry.New(playerId)
     self.playerScores[playerId] = 0
@@ -168,12 +168,12 @@ function Tournament.AddPlayer(self, playerId)
   end
 end
 
-function Tournament.GetScore(self, playerId)
+function Tournament:GetScore(playerId)
   return self.playerScores[playerId]
 end
 
 
-function Tournament.AreAllMatchesComplete(self)
+function Tournament:AreAllMatchesComplete()
   for k,v in pairs(self.matches) do
     if not v.isComplete then return false end
   end
@@ -181,7 +181,7 @@ function Tournament.AreAllMatchesComplete(self)
 end
 
 
-function Tournament.GenerateMatches(self, playersPerMatch)
+function Tournament:GenerateMatches(playersPerMatch)
   playersPerMatch = playersPerMatch or 2
 
   self.currentRound = self.currentRound + 1
@@ -229,7 +229,7 @@ function Tournament.GenerateMatches(self, playersPerMatch)
 end
 
 
-function Tournament.GetAllMatches(self)
+function Tournament:GetAllMatches()
   local result = {}
   for k,v in pairs(self.matches) do
     result[k] = v
@@ -237,7 +237,7 @@ function Tournament.GetAllMatches(self)
   return result
 end
 
-function Tournament.GetActiveMatches(self)
+function Tournament:GetActiveMatches()
   local result = {}
   for k,v in ipairs(self.matches) do
     if not v.isComplete then table.insert(result, v) end
@@ -246,15 +246,7 @@ function Tournament.GetActiveMatches(self)
 end
 
 
---[[
-function Tournament.IsComplete(self, maxWinners)
-  maxWinners = maxWinners or 1
-  local players = self:GetActivePlayers()
-  return #players <= maxWinners
-end
-]]
-
-function Tournament.FindMatchForPlayer(self, playerId)
+function Tournament:FindMatchForPlayer(playerId)
   local matches = self:GetActiveMatches()
   for k,v in pairs(matches) do
     if v:ContainsPlayer(playerId) then
@@ -265,7 +257,7 @@ function Tournament.FindMatchForPlayer(self, playerId)
 end
 
 
-function Tournament.SubmitScore(self, playerId, score)
+function Tournament:SubmitScore(playerId, score)
   local match = self:FindMatchForPlayer(playerId)
   if match == nil then
     warn("Could not find an active match for player " .. playerId)
@@ -279,7 +271,7 @@ end
 
 
 
-function Tournament.DebugPrint(self)
+function Tournament:DebugPrint()
 
   for _, match in ipairs(self.matches) do
     print("----- match", match.id, "round", match.round)
