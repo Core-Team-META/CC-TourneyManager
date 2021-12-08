@@ -1,12 +1,6 @@
 local Tournament = {}
 
 
-Tournament.STATE_NOT_YET_STARTED = "NOT YET STARTED"
-Tournament.STATE_IN_PROGRESS = "IN PROGRESS"
-Tournament.STATE_COMPLETE = "COMPLETE"
-
-
-
 local PlayerEntry = {}
 
 -- Entry for a player in a tournament.  
@@ -107,13 +101,17 @@ end
 
 ----------------------------------
 
-function Tournament.New()
-
+function Tournament.New(defaultMatchSize, maxWinners)
+  defaultMatchSize = defaultMatchSize or 2
+  maxWinners = maxWinners or 1
   local newTournament = {
     players = {},  -- Player entries
     matches = {},  -- Matches
+    defaultMatchSize = defaultMatchSize,
+    maxWinners = maxWinners,
+    isComplete = false,
+    playerCount = 0,
     playerScores = {},
-    state = {},
     currentRound = 0,
     nextMatchId = 0
   }
@@ -152,10 +150,19 @@ function Tournament.AddAllPlayers(self)
   end
 end
 
+
+function Tournament.AddDummyPlayers(self, count)
+  for i = 1, count do
+    self:AddPlayer(string.format("testPlayer_%d", self.playerCount))
+  end
+end
+
+
 function Tournament.AddPlayer(self, playerId)
   if self.players[playerId] == nil then
     self.players[playerId] = PlayerEntry.New(playerId)
     self.playerScores[playerId] = 0
+    self.playerCount = self.playerCount + 1
   else
     warn("Tried to add a player who was already in the tournament:", playerId)
   end
@@ -186,7 +193,7 @@ function Tournament.GenerateMatches(self, playersPerMatch)
   local playerList = {}
   for k,v in pairs(self.players) do
     if not v.isEliminated then
-      print("inserting", k)
+      --print("inserting", k)
       table.insert(playerList, {id = k, points = self:GetScore(k)})
     end
   end
@@ -194,7 +201,7 @@ function Tournament.GenerateMatches(self, playersPerMatch)
     warn("Tried to generate new matches while there are no active players.")
   end
 
-  print("Generating matches for ", #playerList, "players")
+  print("Generating matches for ", #playerList, "players.  Round", self.currentRound)
   table.sort(playerList, function(a, b) return a.points < b.points end)
 
   local playersInMatch = {}
@@ -239,20 +246,13 @@ function Tournament.GetActiveMatches(self)
 end
 
 
-
-function Tournament.ReportPlayerScore(playerId, score)
-  -- first figure out which match they're in
-  local matches = self.GetActiveMatches()
-  for k,v in pairs(matches) do
-    if v:ContainsPlayer(playerId) then
-      v:SubmitMatchScore(playerId, score)
-      self.players[playerId].points = self.players[playerId].points + score
-      break
-    end
-  end
-  -- update score
-  -- mark match complete if possible
+--[[
+function Tournament.IsComplete(self, maxWinners)
+  maxWinners = maxWinners or 1
+  local players = self:GetActivePlayers()
+  return #players <= maxWinners
 end
+]]
 
 function Tournament.FindMatchForPlayer(self, playerId)
   local matches = self:GetActiveMatches()
@@ -272,22 +272,15 @@ function Tournament.SubmitScore(self, playerId, score)
     return
   end
   match:SubmitMatchScore(playerId, score)
+
+  local remainingPlayers = self:GetActivePlayers()
+  self.isComplete = #remainingPlayers <= self.maxWinners
 end
+
 
 
 function Tournament.DebugPrint(self)
 
-  --[[
-    progressingPlayers = progressingPlayers,
-    playerIds = playerIdList,
-    playerScores = {},
-    startTime = -1,
-    endTime = -1,
-    id = tournament:GetNewMatchId(),
-    tournament = tournament,
-    isComplete = false,
-
-  ]]
   for _, match in ipairs(self.matches) do
     print("----- match", match.id, "round", match.round)
     local sortedScores = {}
@@ -306,6 +299,7 @@ function Tournament.DebugPrint(self)
   for k,v in pairs(self:GetActivePlayers()) do
     print(k, v)
   end
+  print("is complete?", self.isComplete)
 
 end
 

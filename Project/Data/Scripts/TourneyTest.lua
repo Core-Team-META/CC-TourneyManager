@@ -21,13 +21,25 @@ end
 Game.playerJoinedEvent:Connect(function(player)
   player.bindingPressedEvent:Connect(function (player, binding)
       if binding == "ability_extra_1" then
-        tourney:AddAllPlayers()
+        --tourney:AddAllPlayers()
+        tourney:AddDummyPlayers(20)
       elseif binding == "ability_extra_2" then
         tourney:GenerateMatches()
       elseif binding == "ability_extra_3" then
         SubmitScores()
       elseif binding == "ability_extra_4" then
         print(tourney:DebugPrint())
+      elseif binding == "ability_extra_5" then
+        local t = Tournament.New()
+        t:AddDummyPlayers(20)
+        while not t.isComplete do
+          t:GenerateMatches()
+          for k,p in pairs(t:GetActivePlayers()) do
+            t:SubmitScore(p, math.random(1, 100))
+          end
+          Task.Wait()
+        end
+        print(t:DebugPrint())
       end
     end)
   end)
