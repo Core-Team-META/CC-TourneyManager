@@ -8,35 +8,26 @@ local tourney = Tournament.New()
 
 
 
-
-function TestTournament()
-  tourney:AddAllPlayers()
-  --tourney:AddPlayer(Game.GetPlayers()[1])
-  tourney:GenerateMatches()
-end
-
-
 function SubmitScores()
   print("submitting scores")
-  for k,v in pairs(tourney.players) do
-    print(v)
-    local p = Game.FindPlayer(v.playerId)
+  for k,p in pairs(tourney:GetActivePlayers()) do
     local score = math.random(1, 100)
-    print(p.name, score)
+    print("for", p, score)
     tourney:SubmitScore(p, score)
   end
-
 end
-
-
 
 
 Game.playerJoinedEvent:Connect(function(player)
   player.bindingPressedEvent:Connect(function (player, binding)
       if binding == "ability_extra_1" then
-        TestTournament()
+        tourney:AddAllPlayers()
       elseif binding == "ability_extra_2" then
+        tourney:GenerateMatches()
+      elseif binding == "ability_extra_3" then
         SubmitScores()
+      elseif binding == "ability_extra_4" then
+        print(tourney:DebugPrint())
       end
     end)
   end)
