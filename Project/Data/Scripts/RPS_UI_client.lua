@@ -1,14 +1,19 @@
 
 -- Custom 
 local propRPS_UI = script:GetCustomProperty("RPS_UI"):WaitForObject()
-local propIcon_Rock = script:GetCustomProperty("icon_Rock"):WaitForObject()
-local propIcon_Paper = script:GetCustomProperty("icon_Paper"):WaitForObject()
-local propIcon_Scissors = script:GetCustomProperty("icon_Scissors"):WaitForObject()
+local propBtn_Rock = script:GetCustomProperty("btn_Rock"):WaitForObject()
+local propBtn_Paper = script:GetCustomProperty("btn_Paper"):WaitForObject()
+local propBtn_Scissors = script:GetCustomProperty("btn_Scissors"):WaitForObject()
 local propTimerBar = script:GetCustomProperty("TimerBar"):WaitForObject()
 local propHighlight = script:GetCustomProperty("Highlight"):WaitForObject()
 
 local iconLabels = propRPS_UI:FindDescendantsByName("IconLabel")
-local icons = {propIcon_Rock, propIcon_Paper, propIcon_Scissors}
+local icons = {propBtn_Rock, propBtn_Paper, propBtn_Scissors}
+local reverseIcons = {}
+-- make a quick reverse lookup
+for k,v in pairs(icons) do
+  reverseIcons[v] = k
+end
 
 local isUIVisible = false
 local choiceStartTime = -1
@@ -26,6 +31,9 @@ local currentSelection = 1
 function StartChoice()
   propRPS_UI.visibility = Visibility.INHERIT
   isUIVisible = true
+
+  UI.SetCursorVisible(true)
+  UI.SetCanCursorInteractWithUI(true)
 
   currentSelection = math.random(3)
   choiceStartTime = time()
@@ -79,11 +87,20 @@ function OnBindingPressed(player, binding)
   elseif binding == "ability_extra_3" then
     currentSelection = 3
   end
+end
 
+function OnIconClicked(btn)
+  if reverseIcons[btn] ~= nil then
+    currentSelection = reverseIcons[btn]
+  end
+end
+
+for k,v in pairs(icons) do
+  v.clickedEvent:Connect(OnIconClicked)
 end
 
 player.bindingPressedEvent:Connect(OnBindingPressed)
+Events.Connect("RPS_SC", StartChoice)
 
 
-
-StartChoice()
+--StartChoice()
