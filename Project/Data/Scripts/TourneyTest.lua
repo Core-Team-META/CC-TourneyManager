@@ -17,7 +17,7 @@ function SubmitScores()
   end
 end
 
-
+--[[
 Game.playerJoinedEvent:Connect(function(player)
   player.bindingPressedEvent:Connect(function (player, binding)
       if binding == "ability_extra_1" then
@@ -43,24 +43,4 @@ Game.playerJoinedEvent:Connect(function(player)
       end
     end)
   end)
-
-
-
---[[
-while not tourney:IsDone() do
-  t:GenerateMatches()
-
-  for k, match in pairs(t:GetActiveMatches()) do
-    if match.isActive then
-      tourney:ReportResults(match, match.players[1])
-    end
-  end
-end
-
-print("Winner is", tournament:GetWinner())
-
-print("Rankings are:")
-for k,v in pairs(tournament:GetRankings()) do
-  print(v.player.name, v.score)
-end
 ]]
