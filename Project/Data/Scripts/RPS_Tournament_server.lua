@@ -55,19 +55,17 @@ end
 
 
 function OnRoundEnd()
+  local stagesToDespawn = {table.unpack(spawnedStages)}
+  spawnedStages = {}
+
   Task.Spawn(function()
-    print("we're n here...")
-    spawnedStages = {}
     Task.Wait(3)
-    for k,v in pairs(spawnedStages) do
+    for k,v in pairs(stagesToDespawn) do
       v:Destroy()
     end
-    print("stuff destroyed")
     Task.Wait(2)
 
-    print("startinmg a round")
     StartRound()
-    print("made it to de end...")
   end)
 end
 

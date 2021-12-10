@@ -23,6 +23,9 @@ Objects {
   ChildIds: 10708842750516211025
   ChildIds: 2916920563855658298
   ChildIds: 7314313961066598169
+  ChildIds: 8656839648555025115
+  ChildIds: 3524274645283911047
+  ChildIds: 4898209964024369410
   UnregisteredParameters {
   }
   Collidable_v2 {
@@ -35,6 +38,94 @@ Objects {
     Value: "mc:ecollisionsetting:inheritfromparent"
   }
   Folder {
+  }
+}
+Objects {
+  Id: 4898209964024369410
+  Name: "PlayerNameplates (PlayerTitles)"
+  Transform {
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 4781671109827199097
+  TemplateInstance {
+    ParameterOverrideMap {
+      key: 5332119631449535659
+      value {
+        Overrides {
+          Name: "Name"
+          String: "PlayerNameplates (PlayerTitles)"
+        }
+      }
+    }
+    TemplateAsset {
+      Id: 11172534859994970657
+    }
+  }
+}
+Objects {
+  Id: 3524274645283911047
+  Name: "PlayerList (PlayerTitles)"
+  Transform {
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 4781671109827199097
+  TemplateInstance {
+    ParameterOverrideMap {
+      key: 7621446724159773466
+      value {
+        Overrides {
+          Name: "Name"
+          String: "PlayerList (PlayerTitles)"
+        }
+      }
+    }
+    TemplateAsset {
+      Id: 16571754351938271125
+    }
+  }
+}
+Objects {
+  Id: 8656839648555025115
+  Name: "FallRespawner"
+  Transform {
+    Location {
+      X: -350
+      Y: -200
+      Z: 1092.35522
+    }
+    Rotation {
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 4781671109827199097
+  Collidable_v2 {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  Visible_v2 {
+    Value: "mc:evisibilitysetting:inheritfromparent"
+  }
+  CameraCollidable {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  EditorIndicatorVisibility {
+    Value: "mc:eindicatorvisibility:visiblewhenselected"
+  }
+  Script {
+    ScriptAsset {
+      Id: 12228046275754611643
+    }
   }
 }
 Objects {
