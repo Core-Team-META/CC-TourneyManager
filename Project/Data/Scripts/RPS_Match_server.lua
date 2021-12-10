@@ -26,9 +26,10 @@ local currentMatchState = STATE_GAME_NOT_STARTED
 local selectionsReceived = 0
 
 function StartMatch(p1, p2)
+  selectionsReceived = 0
   currentMatchState = STATE_WAITING_FOR_MOVES
   print("match started:", p1, p2)
-  -- todo: make this not debug logic!
+
   if p1 ~= nil then ConnectPlayer(Game.FindPlayer(p1), slotList[1]) end
   if p2 ~= nil then ConnectPlayer(Game.FindPlayer(p2), slotList[2]) end
 end
@@ -90,7 +91,6 @@ function DisplayMatchResults()
 
   Task.Wait(3)
   if not isDraw then
-    print("Winner:", winner.player.name)
     currentMatchState = STATE_GAME_NOT_STARTED
     Task.Wait(1)
     World.SpawnAsset(propRPS_LoserExplosion, {position = loser.player:GetWorldPosition()})
@@ -101,11 +101,16 @@ function DisplayMatchResults()
     loser.player:SetVelocity(Vector3.New(math.random(-500, 500), math.random(-500, 500), 1000))
     Task.Wait(3)
     loser.player:Spawn()
+    -- This should be last for reasons.
+    -- (mostly because when we broadcast these, it will destroy this)
+    Events.Broadcast("RPS_Result", winner.pid, 1)
+    Events.Broadcast("RPS_Result", loser.pid, 0)
+    print("Winner:", winner.player.name)
   else
     print("It was a draw!")
     Task.Wait(2)
     currentMatchState = STATE_WAITING_FOR_MOVES
-    StartMatch(plist[1].player, plist[2].player) 
+    StartMatch(plist[1].pid, plist[2].pid) 
  end
 end
 

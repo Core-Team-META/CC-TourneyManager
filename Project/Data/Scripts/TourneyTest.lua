@@ -17,7 +17,6 @@ function SubmitScores()
   end
 end
 
---[[
 Game.playerJoinedEvent:Connect(function(player)
   player.bindingPressedEvent:Connect(function (player, binding)
       if binding == "ability_extra_1" then
@@ -31,7 +30,7 @@ Game.playerJoinedEvent:Connect(function(player)
         print(tourney:DebugPrint())
       elseif binding == "ability_extra_5" then
         local t = Tournament.New()
-        t:AddDummyPlayers(20)
+        t:AddDummyPlayers(21)
         while not t.isComplete do
           t:GenerateMatches()
           for k,p in pairs(t:GetActivePlayers()) do
@@ -43,4 +42,3 @@ Game.playerJoinedEvent:Connect(function(player)
       end
     end)
   end)
-]]

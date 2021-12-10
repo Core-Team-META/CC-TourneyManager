@@ -6,6 +6,7 @@ local Tournament = require(prop_TournamentMgr)
 local tourney = nil -- Tournament.New()
 
 local spawnedStages = {}
+local listeners = {}
 
 function StartTournament()
   local players = Game.GetPlayers()
@@ -14,6 +15,8 @@ function StartTournament()
     return
   else
     tourney = Tournament.New()
+    table.insert(listeners, tourney.roundCompleteEvent:Connect(OnRoundEnd))
+    table.insert(listeners, tourney.tournamentCompleteEvent:Connect(OnTournamentEnd))
     for _, p in pairs(players) do
       tourney:AddPlayer(p.id)
     end
@@ -23,6 +26,10 @@ end
 
 
 function StartRound()
+  if tourney.isComplete then
+    print("no matches left to make")
+    return
+  end
   tourney:GenerateMatches()
   local matches = tourney:GetActiveMatches()
   local STAGE_ORIGIN = Vector3.New(0, 0, 200)
@@ -47,10 +54,38 @@ function StartRound()
 end
 
 
+function OnRoundEnd()
+  Task.Spawn(function()
+    print("we're n here...")
+    spawnedStages = {}
+    Task.Wait(3)
+    for k,v in pairs(spawnedStages) do
+      v:Destroy()
+    end
+    print("stuff destroyed")
+    Task.Wait(2)
+
+    print("startinmg a round")
+    StartRound()
+    print("made it to de end...")
+  end)
+end
 
 
+function OnTournamentEnd(winnerList)
+  print("The winner is", winnerList[1], winnerList)
+  for k,v in pairs(listeners) do
+    v:Disconnect()
+  end
+end
 
+function OnReceiveResults(playerId, score)
+  if tourney ~= nil then
+    tourney:SubmitScore(playerId, score)
+  end
+end
 
 -- Set up some events:
 
 Events.Connect("RPS_StartTourney", StartTournament)
+Events.Connect("RPS_Result", OnReceiveResults)

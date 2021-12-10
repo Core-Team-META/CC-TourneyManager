@@ -262,6 +262,7 @@ end
 
 
 function Tournament:SubmitScore(playerId, score)
+  print("---------SCORE SUBMITTED----------", playerId, score)
   local match = self:FindMatchForPlayer(playerId)
   if match == nil then
     warn("Could not find an active match for player " .. playerId)
@@ -271,13 +272,18 @@ function Tournament:SubmitScore(playerId, score)
 
   local remainingPlayers = self:GetActivePlayers()
   
+  --print("------------------", #remainingPlayers, self.maxWinners, #self:GetActiveMatches())
+  --print("???", #self:GetActiveMatches(), self:AreAllMatchesComplete())
   if self:AreAllMatchesComplete() then
+    --print("we got this far...")
     self.roundCompleteEvent:Trigger(self.round)
-  end
+    --print("###MATCHES COMPLETE")
 
-  if #remainingPlayers <= self.maxWinners then
-    self.isComplete = true
-    self.tournamentCompleteEvent:Trigger(remainingPlayers)
+    if #remainingPlayers <= self.maxWinners then
+      print("!!!!", remainingPlayers)
+      self.isComplete = true
+      self.tournamentCompleteEvent:Trigger(remainingPlayers)
+    end    
   end
 end
 
