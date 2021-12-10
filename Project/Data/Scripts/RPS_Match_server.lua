@@ -11,6 +11,7 @@ local propRPS_WorldIcon_Paper = script:GetCustomProperty("RPS_WorldIcon_Paper")
 local propRPS_WorldIcon_Scissors = script:GetCustomProperty("RPS_WorldIcon_Scissors")
 local propRPS_LoserExplosion = script:GetCustomProperty("RPS_LoserExplosion")
 
+
 local slotList = { propPlayerSpot1, propPlayerSpot2 }
 
 local actions = {propRPS_action_rock, propRPS_action_paper, propRPS_action_scissors}
@@ -28,8 +29,8 @@ function StartMatch(p1, p2)
   currentMatchState = STATE_WAITING_FOR_MOVES
   print("match started:", p1, p2)
   -- todo: make this not debug logic!
-  if p1 ~= nil then ConnectPlayer(p1, slotList[1]) end
-  if p2 ~= nil then ConnectPlayer(p2, slotList[2]) end
+  if p1 ~= nil then ConnectPlayer(Game.FindPlayer(p1), slotList[1]) end
+  if p2 ~= nil then ConnectPlayer(Game.FindPlayer(p2), slotList[2]) end
 end
 
 
@@ -83,7 +84,7 @@ function DisplayMatchResults()
   elseif s1 == s2 then
     isDraw = true
   else
-    warn(":got here somehow???")
+    warn("Somehow no one lost the match, but it also wasn't a draw??")
     print(s1, s2)
   end
 
@@ -92,12 +93,12 @@ function DisplayMatchResults()
     print("Winner:", winner.player.name)
     currentMatchState = STATE_GAME_NOT_STARTED
     Task.Wait(1)
-    loser.player:SetVelocity(Vector3.New(math.random(-500, 500), math.random(-500, 500), 1000))
     World.SpawnAsset(propRPS_LoserExplosion, {position = loser.player:GetWorldPosition()})
-    Task.Wait()
-    loser.player:Die()
     DisconnectPlayer(plist[1].player)
     DisconnectPlayer(plist[2].player)
+    loser.player:Die()
+    Task.Wait()
+    loser.player:SetVelocity(Vector3.New(math.random(-500, 500), math.random(-500, 500), 1000))
     Task.Wait(3)
     loser.player:Spawn()
   else
@@ -109,9 +110,10 @@ function DisplayMatchResults()
 end
 
 function ConnectPlayer(player, slot)
+  print("connecting player", player)
   --bindListener = player.bindingPressedEvent:Connect(OnBindPressed)
   --propTrigger.isEnabled = false
-  player.serverUserData.blockFlying = true
+  --player.serverUserData.blockFlying = true
 
   playerList[player.id] = -1
 
@@ -137,7 +139,7 @@ end
 function DisconnectPlayer(player)
   --bindListener:Disconnect()
   --propTrigger.isEnabled = true
-  player.serverUserData.blockFlying = nil
+  --player.serverUserData.blockFlying = nil
 
   playerList[player.id] = nil
 
@@ -150,7 +152,6 @@ function DisconnectPlayer(player)
   player.maxJumpCount = 2
   player.maxWalkSpeed = 800
 
-  --Events.BroadcastToPlayer(player, "HideStanceUI")
 end
 
 function OnPlayerLeft(p)

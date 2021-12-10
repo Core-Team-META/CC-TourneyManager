@@ -1,6 +1,8 @@
+local prop_LuaEvents = script:GetCustomProperty("_LuaEvents")
+local LuaEvent = require(prop_LuaEvents)
+
+
 local Tournament = {}
-
-
 local PlayerEntry = {}
 
 -- Entry for a player in a tournament.  
@@ -113,7 +115,9 @@ function Tournament.New(defaultMatchSize, maxWinners)
     playerCount = 0,
     playerScores = {},
     currentRound = 0,
-    nextMatchId = 0
+    nextMatchId = 0,
+    roundCompleteEvent = LuaEvent.New(),
+    tournamentCompleteEvent = LuaEvent.New(),
   }
   setmetatable(newTournament, {__index = Tournament})
   return newTournament
@@ -266,7 +270,15 @@ function Tournament:SubmitScore(playerId, score)
   match:SubmitMatchScore(playerId, score)
 
   local remainingPlayers = self:GetActivePlayers()
-  self.isComplete = #remainingPlayers <= self.maxWinners
+  
+  if self:AreAllMatchesComplete() then
+    self.roundCompleteEvent:Trigger(self.round)
+  end
+
+  if #remainingPlayers <= self.maxWinners then
+    self.isComplete = true
+    self.tournamentCompleteEvent:Trigger(remainingPlayers)
+  end
 end
 
 
