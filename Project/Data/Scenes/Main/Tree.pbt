@@ -20,9 +20,6 @@ Objects {
   ChildIds: 14982843161775482339
   ChildIds: 11130823632725681382
   ChildIds: 11148898020287790302
-  ChildIds: 16213637451175702916
-  ChildIds: 4760861568028135750
-  ChildIds: 1169140080936088538
   ChildIds: 16004652759596532356
   ChildIds: 10708842750516211025
   UnregisteredParameters {
@@ -344,33 +341,6 @@ Objects {
   ParentId: 16004652759596532356
   UnregisteredParameters {
     Overrides {
-      Name: "cs:RPS_action_rock"
-      ObjectReference {
-        SelfId: 8420689715362251490
-        SubObjectId: 5763514506166810813
-        InstanceId: 4760861568028135750
-        TemplateId: 1371974498219595122
-      }
-    }
-    Overrides {
-      Name: "cs:RPS_action_paper"
-      ObjectReference {
-        SelfId: 4915987145225334692
-        SubObjectId: 15340645273759346961
-        InstanceId: 1169140080936088538
-        TemplateId: 3484184920787573982
-      }
-    }
-    Overrides {
-      Name: "cs:RPS_action_scissors"
-      ObjectReference {
-        SelfId: 13062174685994072327
-        SubObjectId: 1083708550251073628
-        InstanceId: 16213637451175702916
-        TemplateId: 10087261152373902678
-      }
-    }
-    Overrides {
       Name: "cs:root"
       ObjectReference {
         SelfId: 16004652759596532356
@@ -386,6 +356,48 @@ Objects {
       Name: "cs:PlayerSpot2"
       ObjectReference {
         SelfId: 16671707224725888455
+      }
+    }
+    Overrides {
+      Name: "cs:RPS_action_rock"
+      AssetReference {
+        Id: 1371974498219595122
+      }
+    }
+    Overrides {
+      Name: "cs:RPS_action_paper"
+      AssetReference {
+        Id: 3484184920787573982
+      }
+    }
+    Overrides {
+      Name: "cs:RPS_action_scissors"
+      AssetReference {
+        Id: 10087261152373902678
+      }
+    }
+    Overrides {
+      Name: "cs:RPS_WorldIcon_Rock"
+      AssetReference {
+        Id: 3328554878203995829
+      }
+    }
+    Overrides {
+      Name: "cs:RPS_WorldIcon_Paper"
+      AssetReference {
+        Id: 27369142792191305
+      }
+    }
+    Overrides {
+      Name: "cs:RPS_WorldIcon_Scissors"
+      AssetReference {
+        Id: 1429397764755862452
+      }
+    }
+    Overrides {
+      Name: "cs:RPS_LoserExplosion"
+      AssetReference {
+        Id: 17929487488560365464
       }
     }
   }
@@ -404,87 +416,6 @@ Objects {
   Script {
     ScriptAsset {
       Id: 269298083778353054
-    }
-  }
-}
-Objects {
-  Id: 1169140080936088538
-  Name: "RPS_action_paper"
-  Transform {
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 4781671109827199097
-  WantsNetworking: true
-  TemplateInstance {
-    ParameterOverrideMap {
-      key: 15340645273759346961
-      value {
-        Overrides {
-          Name: "Name"
-          String: "RPS_action_paper"
-        }
-      }
-    }
-    TemplateAsset {
-      Id: 3484184920787573982
-    }
-  }
-}
-Objects {
-  Id: 4760861568028135750
-  Name: "RPS_action_rock"
-  Transform {
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 4781671109827199097
-  WantsNetworking: true
-  TemplateInstance {
-    ParameterOverrideMap {
-      key: 5763514506166810813
-      value {
-        Overrides {
-          Name: "Name"
-          String: "RPS_action_rock"
-        }
-      }
-    }
-    TemplateAsset {
-      Id: 1371974498219595122
-    }
-  }
-}
-Objects {
-  Id: 16213637451175702916
-  Name: "RPS_action_scissors"
-  Transform {
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 4781671109827199097
-  WantsNetworking: true
-  TemplateInstance {
-    ParameterOverrideMap {
-      key: 1083708550251073628
-      value {
-        Overrides {
-          Name: "Name"
-          String: "RPS_action_scissors"
-        }
-      }
-    }
-    TemplateAsset {
-      Id: 10087261152373902678
     }
   }
 }
@@ -606,7 +537,7 @@ Objects {
     Value: "mc:ecollisionsetting:inheritfromparent"
   }
   Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
+    Value: "mc:evisibilitysetting:forceoff"
   }
   CameraCollidable {
     Value: "mc:ecollisionsetting:inheritfromparent"
@@ -617,7 +548,8 @@ Objects {
   Control {
     Width: 930
     Height: 730
-    UIX: -520
+    UIX: 50
+    UIY: 40
     RenderTransformPivot {
       Anchor {
         Value: "mc:euianchor:middlecenter"
@@ -629,12 +561,12 @@ Objects {
     AnchorLayout {
       SelfAnchor {
         Anchor {
-          Value: "mc:euianchor:middlecenter"
+          Value: "mc:euianchor:topleft"
         }
       }
       TargetAnchor {
         Anchor {
-          Value: "mc:euianchor:middleright"
+          Value: "mc:euianchor:topleft"
         }
       }
     }

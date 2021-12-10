@@ -44,6 +44,10 @@ function EndChoice()
   Events.BroadcastToServer("RPS_C", currentSelection)
   isUIVisible = false
   propRPS_UI.visibility = Visibility.FORCE_OFF
+
+  UI.SetCursorVisible(false)
+  UI.SetCanCursorInteractWithUI(false)
+
 end
 
 

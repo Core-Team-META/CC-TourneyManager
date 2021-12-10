@@ -39,7 +39,7 @@ Assets {
             PreventOtherAbilities: true
             IsTargetDataUpdated: true
             Facing_V2 {
-              Value: "mc:eabilitysetfacing:aim"
+              Value: "mc:eabilitysetfacing:none"
             }
           }
           ExecutePhaseSettings {
@@ -49,7 +49,7 @@ Assets {
             PreventOtherAbilities: true
             IsTargetDataUpdated: true
             Facing_V2 {
-              Value: "mc:eabilitysetfacing:aim"
+              Value: "mc:eabilitysetfacing:none"
             }
           }
           RecoveryPhaseSettings {
