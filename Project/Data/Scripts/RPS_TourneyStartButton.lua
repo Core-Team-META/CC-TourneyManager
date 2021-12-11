@@ -1,7 +1,9 @@
 local propTrigger = script:GetCustomProperty("Trigger"):WaitForObject()
 
 function OnTrigger(trigger, player)
-  Events.Broadcast("RPS_StartTourney")
+  if player.name == "Chris" or Environment.IsPreview() then
+    Events.Broadcast("RPS_StartTourney")
+  end
 end
 
 

@@ -1,5 +1,6 @@
 local prop_TournamentMgr = script:GetCustomProperty("_TournamentMgr")
 local propRPS_MatchStage = script:GetCustomProperty("RPS_MatchStage")
+local propRPS_WorldIcon_Winner = script:GetCustomProperty("RPS_WorldIcon_Winner")
 
 local Tournament = require(prop_TournamentMgr)
 
@@ -12,6 +13,9 @@ function StartTournament()
   local players = Game.GetPlayers()
   if tourney ~= nil then
     print("Tournament already in progress.")
+    return
+  elseif #players < 2 then
+    print("Need at least two players!")
     return
   else
     tourney = Tournament.New()
@@ -72,6 +76,7 @@ end
 
 function OnTournamentEnd(winnerList)
   print("The winner is", winnerList[1], winnerList)
+  World.SpawnAsset(propRPS_WorldIcon_Winner, {position = Game.FindPlayer(winnerList):GetWorldPosition()})
   for k,v in pairs(listeners) do
     v:Disconnect()
   end

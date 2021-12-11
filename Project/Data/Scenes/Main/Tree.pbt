@@ -59,6 +59,14 @@ Objects {
           Name: "Name"
           String: "PlayerNameplates (PlayerTitles)"
         }
+        Overrides {
+          Name: "cs:ShowHealth"
+          Bool: false
+        }
+        Overrides {
+          Name: "cs:ShowOnSelf"
+          Bool: false
+        }
       }
     }
     TemplateAsset {
@@ -148,6 +156,12 @@ Objects {
       Name: "cs:RPS_MatchStage"
       AssetReference {
         Id: 5476186188111447366
+      }
+    }
+    Overrides {
+      Name: "cs:RPS_WorldIcon_Winner"
+      AssetReference {
+        Id: 4497153142464080523
       }
     }
   }
