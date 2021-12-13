@@ -17,6 +17,24 @@ Assets {
   }
 }
 Assets {
+  Id: 8264534517409794811
+  Name: "Abstract Shape 01"
+  PlatformAssetType: 9
+  PrimaryAsset {
+    AssetType: "PlatformBrushAssetRef"
+    AssetId: "Core_UI_AbstractPack_Shape_001"
+  }
+}
+Assets {
+  Id: 7245383435501351986
+  Name: "Abstract Shape 02"
+  PlatformAssetType: 9
+  PrimaryAsset {
+    AssetType: "PlatformBrushAssetRef"
+    AssetId: "Core_UI_AbstractPack_Shape_002"
+  }
+}
+Assets {
   Id: 6818253796561881057
   Name: "Abstract Background 06"
   PlatformAssetType: 9
@@ -62,11 +80,11 @@ Assets {
   }
 }
 Assets {
-  Id: 1836081191388647302
-  Name: "Abstract Background 01"
+  Id: 2172121391886733752
+  Name: "Banner"
   PlatformAssetType: 9
   PrimaryAsset {
     AssetType: "PlatformBrushAssetRef"
-    AssetId: "Core_UI_AbstractPack_Background_001"
+    AssetId: "UI_Fantasy_Icon_Banner"
   }
 }
