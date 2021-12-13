@@ -272,15 +272,10 @@ function Tournament:SubmitScore(playerId, score)
 
   local remainingPlayers = self:GetActivePlayers()
   
-  --print("------------------", #remainingPlayers, self.maxWinners, #self:GetActiveMatches())
-  --print("???", #self:GetActiveMatches(), self:AreAllMatchesComplete())
   if self:AreAllMatchesComplete() then
-    --print("we got this far...")
     self.roundCompleteEvent:Trigger(self.round)
-    --print("###MATCHES COMPLETE")
 
     if #remainingPlayers <= self.maxWinners then
-      print("!!!!", remainingPlayers)
       self.isComplete = true
       self.tournamentCompleteEvent:Trigger(remainingPlayers)
     end    
