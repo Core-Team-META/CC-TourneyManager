@@ -15,6 +15,7 @@ Objects {
     }
   }
   ParentId: 3088526418128631607
+  ChildIds: 8189935941007161703
   ChildIds: 6298947424261722494
   ChildIds: 11652079119698659863
   Collidable_v2 {
@@ -1204,8 +1205,8 @@ Objects {
   Control {
     Width: 130
     Height: 108
-    UIX: -114.884399
-    UIY: -99.0773621
+    UIX: -9.01049805
+    UIY: -137.357208
     RenderTransformPivot {
       Anchor {
         Value: "mc:euianchor:middlecenter"
@@ -1219,6 +1220,7 @@ Objects {
         R: 1
         G: 1
         B: 1
+        A: 0.643137276
       }
       TeamSettings {
       }
@@ -1585,6 +1587,12 @@ Objects {
         SelfId: 8646976298481412770
       }
     }
+    Overrides {
+      Name: "cs:ButtonClickPressCore01SFX"
+      ObjectReference {
+        SelfId: 8189935941007161703
+      }
+    }
   }
   Collidable_v2 {
     Value: "mc:ecollisionsetting:inheritfromparent"
@@ -1602,5 +1610,44 @@ Objects {
     ScriptAsset {
       Id: 1642456599422316442
     }
+  }
+}
+Objects {
+  Id: 8189935941007161703
+  Name: "Button Click Press Core 01 SFX"
+  Transform {
+    Location {
+    }
+    Rotation {
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 11148898020287790302
+  Collidable_v2 {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  Visible_v2 {
+    Value: "mc:evisibilitysetting:inheritfromparent"
+  }
+  CameraCollidable {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  EditorIndicatorVisibility {
+    Value: "mc:eindicatorvisibility:visiblewhenselected"
+  }
+  AudioInstance {
+    AudioAsset {
+      Id: 5491390088319473143
+    }
+    Volume: 1
+    Falloff: -1
+    Radius: -1
+    EnableOcclusion: true
+    IsSpatializationEnabled: true
+    IsAttenuationEnabled: true
   }
 }

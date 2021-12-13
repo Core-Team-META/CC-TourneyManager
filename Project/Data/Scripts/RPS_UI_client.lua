@@ -6,6 +6,7 @@ local propBtn_Paper = script:GetCustomProperty("btn_Paper"):WaitForObject()
 local propBtn_Scissors = script:GetCustomProperty("btn_Scissors"):WaitForObject()
 local propTimerBar = script:GetCustomProperty("TimerBar"):WaitForObject()
 local propHighlight = script:GetCustomProperty("Highlight"):WaitForObject()
+local propButtonClickPressCore01SFX = script:GetCustomProperty("ButtonClickPressCore01SFX"):WaitForObject()
 
 local iconLabels = propRPS_UI:FindDescendantsByName("IconLabel")
 local icons = {propBtn_Rock, propBtn_Paper, propBtn_Scissors}
@@ -85,10 +86,13 @@ end
 
 function OnBindingPressed(player, binding)
   if binding == "ability_extra_1" then
+    propButtonClickPressCore01SFX:Play()
     currentSelection = 1
   elseif binding == "ability_extra_2" then
+    propButtonClickPressCore01SFX:Play()
     currentSelection = 2
   elseif binding == "ability_extra_3" then
+    propButtonClickPressCore01SFX:Play()
     currentSelection = 3
   end
 end
@@ -96,6 +100,7 @@ end
 function OnIconClicked(btn)
   if reverseIcons[btn] ~= nil then
     currentSelection = reverseIcons[btn]
+    propButtonClickPressCore01SFX:Play()
   end
 end
 

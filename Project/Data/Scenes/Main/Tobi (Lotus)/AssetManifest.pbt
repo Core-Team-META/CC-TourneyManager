@@ -44,6 +44,15 @@ Assets {
   }
 }
 Assets {
+  Id: 5491390088319473143
+  Name: "Button Click Press Core 01 SFX"
+  PlatformAssetType: 7
+  PrimaryAsset {
+    AssetType: "AudioAssetRef"
+    AssetId: "sfxui_click_press_core_01_Cue_ref"
+  }
+}
+Assets {
   Id: 5306692757250206298
   Name: "Abstract Shape 05"
   PlatformAssetType: 9

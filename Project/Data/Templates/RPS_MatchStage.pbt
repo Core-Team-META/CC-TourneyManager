@@ -16,9 +16,9 @@ Assets {
           }
         }
         ParentId: 4781671109827199097
-        ChildIds: 4142048574253822490
-        ChildIds: 17914759578105883327
         ChildIds: 5484543344250515698
+        ChildIds: 17914759578105883327
+        ChildIds: 4142048574253822490
         ChildIds: 11246812462898306070
         ChildIds: 9584298459335484778
         WantsNetworking: true
@@ -36,6 +36,117 @@ Assets {
         }
         Folder {
           IsGroup: true
+        }
+      }
+      Objects {
+        Id: 5484543344250515698
+        Name: "PlayerSpot2"
+        Transform {
+          Location {
+            X: 199.999939
+            Z: 7.62939453e-06
+          }
+          Rotation {
+            Yaw: -179.999969
+          }
+          Scale {
+            X: 0.2
+            Y: 0.2
+            Z: 0.2
+          }
+        }
+        ParentId: 8456419368000778161
+        UnregisteredParameters {
+          Overrides {
+            Name: "ma:Shared_BaseMaterial:id"
+            AssetReference {
+              Id: 15418189413604061223
+            }
+          }
+        }
+        WantsNetworking: true
+        Collidable_v2 {
+          Value: "mc:ecollisionsetting:forceoff"
+        }
+        Visible_v2 {
+          Value: "mc:evisibilitysetting:forceoff"
+        }
+        CameraCollidable {
+          Value: "mc:ecollisionsetting:inheritfromparent"
+        }
+        EditorIndicatorVisibility {
+          Value: "mc:eindicatorvisibility:visiblewhenselected"
+        }
+        CoreMesh {
+          MeshAsset {
+            Id: 8389651592253108254
+          }
+          Teams {
+            IsTeamCollisionEnabled: true
+            IsEnemyCollisionEnabled: true
+          }
+          StaticMesh {
+            Physics {
+              Mass: 100
+              LinearDamping: 0.01
+            }
+            BoundsScale: 1
+          }
+        }
+      }
+      Objects {
+        Id: 17914759578105883327
+        Name: "PlayerSpot1"
+        Transform {
+          Location {
+            X: -200.000061
+            Z: 7.62939453e-06
+          }
+          Rotation {
+          }
+          Scale {
+            X: 0.2
+            Y: 0.2
+            Z: 0.2
+          }
+        }
+        ParentId: 8456419368000778161
+        UnregisteredParameters {
+          Overrides {
+            Name: "ma:Shared_BaseMaterial:id"
+            AssetReference {
+              Id: 15418189413604061223
+            }
+          }
+        }
+        WantsNetworking: true
+        Collidable_v2 {
+          Value: "mc:ecollisionsetting:forceoff"
+        }
+        Visible_v2 {
+          Value: "mc:evisibilitysetting:forceoff"
+        }
+        CameraCollidable {
+          Value: "mc:ecollisionsetting:inheritfromparent"
+        }
+        EditorIndicatorVisibility {
+          Value: "mc:eindicatorvisibility:visiblewhenselected"
+        }
+        CoreMesh {
+          MeshAsset {
+            Id: 8389651592253108254
+          }
+          Teams {
+            IsTeamCollisionEnabled: true
+            IsEnemyCollisionEnabled: true
+          }
+          StaticMesh {
+            Physics {
+              Mass: 100
+              LinearDamping: 0.01
+            }
+            BoundsScale: 1
+          }
         }
       }
       Objects {
@@ -131,115 +242,6 @@ Assets {
         Script {
           ScriptAsset {
             Id: 269298083778353054
-          }
-        }
-      }
-      Objects {
-        Id: 17914759578105883327
-        Name: "PlayerSpot1"
-        Transform {
-          Location {
-            X: -200
-          }
-          Rotation {
-          }
-          Scale {
-            X: 0.2
-            Y: 0.2
-            Z: 0.2
-          }
-        }
-        ParentId: 8456419368000778161
-        UnregisteredParameters {
-          Overrides {
-            Name: "ma:Shared_BaseMaterial:id"
-            AssetReference {
-              Id: 15418189413604061223
-            }
-          }
-        }
-        WantsNetworking: true
-        Collidable_v2 {
-          Value: "mc:ecollisionsetting:forceoff"
-        }
-        Visible_v2 {
-          Value: "mc:evisibilitysetting:inheritfromparent"
-        }
-        CameraCollidable {
-          Value: "mc:ecollisionsetting:inheritfromparent"
-        }
-        EditorIndicatorVisibility {
-          Value: "mc:eindicatorvisibility:visiblewhenselected"
-        }
-        CoreMesh {
-          MeshAsset {
-            Id: 8389651592253108254
-          }
-          Teams {
-            IsTeamCollisionEnabled: true
-            IsEnemyCollisionEnabled: true
-          }
-          StaticMesh {
-            Physics {
-              Mass: 100
-              LinearDamping: 0.01
-            }
-            BoundsScale: 1
-          }
-        }
-      }
-      Objects {
-        Id: 5484543344250515698
-        Name: "PlayerSpot2"
-        Transform {
-          Location {
-            X: 200
-          }
-          Rotation {
-            Yaw: 180
-          }
-          Scale {
-            X: 0.2
-            Y: 0.2
-            Z: 0.2
-          }
-        }
-        ParentId: 8456419368000778161
-        UnregisteredParameters {
-          Overrides {
-            Name: "ma:Shared_BaseMaterial:id"
-            AssetReference {
-              Id: 15418189413604061223
-            }
-          }
-        }
-        WantsNetworking: true
-        Collidable_v2 {
-          Value: "mc:ecollisionsetting:forceoff"
-        }
-        Visible_v2 {
-          Value: "mc:evisibilitysetting:inheritfromparent"
-        }
-        CameraCollidable {
-          Value: "mc:ecollisionsetting:inheritfromparent"
-        }
-        EditorIndicatorVisibility {
-          Value: "mc:eindicatorvisibility:visiblewhenselected"
-        }
-        CoreMesh {
-          MeshAsset {
-            Id: 8389651592253108254
-          }
-          Teams {
-            IsTeamCollisionEnabled: true
-            IsEnemyCollisionEnabled: true
-          }
-          StaticMesh {
-            Physics {
-              Mass: 100
-              LinearDamping: 0.01
-            }
-            BoundsScale: 1
           }
         }
       }
@@ -4971,6 +4973,7 @@ Assets {
         ChildIds: 18325520896784996547
         ChildIds: 8246806347725405997
         ChildIds: 9636927647810990405
+        ChildIds: 14462876096385897614
         Collidable_v2 {
           Value: "mc:ecollisionsetting:inheritfromparent"
         }
@@ -5336,6 +5339,66 @@ Assets {
         CoreMesh {
           MeshAsset {
             Id: 3597792083627246332
+          }
+          Teams {
+            IsTeamCollisionEnabled: true
+            IsEnemyCollisionEnabled: true
+          }
+          StaticMesh {
+            Physics {
+              Mass: 100
+              LinearDamping: 0.01
+            }
+            BoundsScale: 1
+          }
+        }
+      }
+      Objects {
+        Id: 14462876096385897614
+        Name: "Rock 01"
+        Transform {
+          Location {
+            X: 667.934448
+            Y: 359.61618
+            Z: 67.116333
+          }
+          Rotation {
+            Yaw: -48.7847595
+          }
+          Scale {
+            X: 1
+            Y: 1
+            Z: 1
+          }
+        }
+        ParentId: 3363884863528510921
+        UnregisteredParameters {
+          Overrides {
+            Name: "ma:Shared_BaseMaterial:id"
+            AssetReference {
+              Id: 16057688064143076256
+            }
+          }
+          Overrides {
+            Name: "ma:Shared_BaseMaterial:smart"
+            Bool: false
+          }
+        }
+        Collidable_v2 {
+          Value: "mc:ecollisionsetting:inheritfromparent"
+        }
+        Visible_v2 {
+          Value: "mc:evisibilitysetting:inheritfromparent"
+        }
+        CameraCollidable {
+          Value: "mc:ecollisionsetting:inheritfromparent"
+        }
+        EditorIndicatorVisibility {
+          Value: "mc:eindicatorvisibility:visiblewhenselected"
+        }
+        CoreMesh {
+          MeshAsset {
+            Id: 16751224094635422494
           }
           Teams {
             IsTeamCollisionEnabled: true
