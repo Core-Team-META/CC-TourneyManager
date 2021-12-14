@@ -142,9 +142,7 @@ end
 
 
 function DisconnectPlayer(player)
-  --bindListener:Disconnect()
-  --propTrigger.isEnabled = true
-  --player.serverUserData.blockFlying = nil
+  if not Object.IsValid(player) then return end -- Player might have logged out.
 
   playerList[player.id] = nil
 

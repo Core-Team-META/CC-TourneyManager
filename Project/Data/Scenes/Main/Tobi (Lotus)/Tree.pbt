@@ -1203,9 +1203,9 @@ Objects {
     Value: "mc:eindicatorvisibility:visiblewhenselected"
   }
   Control {
-    Width: 130
-    Height: 108
-    UIX: -9.01049805
+    Width: 150
+    Height: 130
+    UIX: 150
     UIY: -137.357208
     RenderTransformPivot {
       Anchor {
@@ -1214,13 +1214,13 @@ Objects {
     }
     Image {
       Brush {
-        Id: 7245383435501351986
+        Id: 8264534517409794811
       }
       Color {
-        R: 1
+        R: 0.26
         G: 1
         B: 1
-        A: 0.643137276
+        A: 1
       }
       TeamSettings {
       }
@@ -1234,12 +1234,12 @@ Objects {
     AnchorLayout {
       SelfAnchor {
         Anchor {
-          Value: "mc:euianchor:bottomcenter"
+          Value: "mc:euianchor:topcenter"
         }
       }
       TargetAnchor {
         Anchor {
-          Value: "mc:euianchor:bottomcenter"
+          Value: "mc:euianchor:topcenter"
         }
       }
     }

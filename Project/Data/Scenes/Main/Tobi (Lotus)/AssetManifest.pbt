@@ -26,15 +26,6 @@ Assets {
   }
 }
 Assets {
-  Id: 7245383435501351986
-  Name: "Abstract Shape 02"
-  PlatformAssetType: 9
-  PrimaryAsset {
-    AssetType: "PlatformBrushAssetRef"
-    AssetId: "Core_UI_AbstractPack_Shape_002"
-  }
-}
-Assets {
   Id: 6818253796561881057
   Name: "Abstract Background 06"
   PlatformAssetType: 9

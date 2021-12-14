@@ -30,16 +30,17 @@ end
 
 
 function StartRound()
-  if tourney.isComplete then
+  if tourney == nil or tourney.isComplete then
     print("no matches left to make")
     return
   end
+
   tourney:GenerateMatches()
   local matches = tourney:GetActiveMatches()
   local STAGE_ORIGIN = Vector3.New(0, 0, 200)
   for k,match in pairs(matches) do
     local stage = World.SpawnAsset(propRPS_MatchStage)
-    local stagePos = STAGE_ORIGIN + Rotation.New(0, 0, k * 360 / #matches) * Vector3.FORWARD * 1000
+    local stagePos = STAGE_ORIGIN + Rotation.New(0, 0, k * 360 / #matches) * Vector3.FORWARD * (500 + (#matches * 120))
     stage:SetWorldPosition(stagePos)
     stage:LookAt(STAGE_ORIGIN)
     table.insert(spawnedStages, stage)
@@ -80,6 +81,7 @@ function OnTournamentEnd(winnerList)
   for k,v in pairs(listeners) do
     v:Disconnect()
   end
+  tourney = nil
 end
 
 function OnReceiveResults(playerId, score)
