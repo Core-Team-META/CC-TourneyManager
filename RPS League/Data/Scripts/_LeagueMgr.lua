@@ -20,14 +20,15 @@ Structures:
 
   League
   {
-    players = {},  -- Player entries
-    matches = {},  -- Matches
-    playerScores = {}, -- map of playerIds -> total scores
-    defaultMatchSize = defaultMatchSize,
-    maxWinners = maxWinners,
-    isComplete = false,
-    currentRound = 0,
-    nextMatchId = 0,
+        state = LeagueState.OPEN_FOR_ENTRY,
+        startTime = os.time(),
+        phaseEndTime = -1,
+        playerEntries = {},
+        matches = {},
+        defaultMatchSize = defaultMatchSize,
+        maxWinners = maxWinners,
+        currentRound = 0,
+        nextMatchId = 0,      
   }
 ]]
 
@@ -49,7 +50,6 @@ API.LeagueState = {
 }
 
 
-local LeagueState = API.LeagueState
 
 -- Register:
 local SECONDS = 1
@@ -100,11 +100,11 @@ function API.StartLeague(forceRestart)
       data = {
         state = LeagueState.OPEN_FOR_ENTRY,
         startTime = os.time(),
+        phaseEndTime = os.time + SIGNUP_WINDOW,
         playerEntries = {},
         matches = {},
         defaultMatchSize = defaultMatchSize,
         maxWinners = maxWinners,
-        isComplete = false,
         currentRound = 0,
         nextMatchId = 0,      
       }
@@ -112,6 +112,10 @@ function API.StartLeague(forceRestart)
     end
   end)
 end
+
+
+
+
 
 
 function API.PlayerSignup(player)
@@ -147,6 +151,86 @@ end
 
 
 
+
+function API.AdvanceLeagueState()
+  while Storage.HasPendingSetConcurrentCreatorData(netref) do
+    Task.Wait()
+  end
+  local currentLeagueData = GetLeagueData()
+  local currentState = 
+
+  d, code, err = Storage.SetConcurrentCreatorData(netref, function(data)
+    local tableToModify = EvaluatePath(data, path)
+    for k,v in pairs(AddPairToTable_data[dataKey]) do
+      if not (ensureUnique and tableToModify[v.k] ~= nil) then
+        tableToModify[v.k] = v.v
+      else
+        print("Blocked becuse not unique")
+      end
+    end
+
+    return data
+  end)
+
+  if code == StorageResultCode.SUCCESS then 
+    print("successful write!")
+    AddPairToTable_data = {}
+    return
+  else
+    warn("Could not write data: (pairs) " .. tostring(code) .. " " .. err)
+  end
+
+end
+
+--[[
+local AddPairToTable_data = {}
+function API.AddPairToTable(key, val, path, netref, ensureUnique)
+  local dataKey = key
+  local shouldStartRequest = false
+
+  if AddPairToTable_data[dataKey] == nil then
+    AddPairToTable_data[dataKey] = {}
+    shouldStartRequest = true
+  end
+
+  table.insert(AddPairToTable_data[dataKey], {k = key, v = val})
+  print("***********")
+  API.DisplayTable(AddPairToTable_data[dataKey])
+
+  if shouldStartRequest then
+    Task.Spawn(function()
+      local d, code, err
+      while true do
+        while Storage.HasPendingSetConcurrentCreatorData(netref) do
+          Task.Wait()
+        end
+
+        d, code, err = Storage.SetConcurrentCreatorData(netref, function(data)
+          local tableToModify = EvaluatePath(data, path)
+          for k,v in pairs(AddPairToTable_data[dataKey]) do
+            if not (ensureUnique and tableToModify[v.k] ~= nil) then
+              tableToModify[v.k] = v.v
+            else
+              print("Blocked becuse not unique")
+            end
+          end
+
+          return data
+        end)
+        if code == StorageResultCode.SUCCESS then 
+          print("successful write!")
+          AddPairToTable_data = {}
+          return
+        else
+          warn("Could not write data: (pairs) " .. tostring(code) .. " " .. err)
+        end
+      end
+    end)
+  end
+
+end
+
+]]
 
 
 function API.AdvanceLeague()
