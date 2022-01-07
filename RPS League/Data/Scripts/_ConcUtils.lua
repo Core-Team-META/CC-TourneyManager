@@ -39,6 +39,8 @@ print(test.val3.c.deepVal)
 
 
 function API.ResetSorageKey(netref)
+  API.EnqueueWrite(netref, function(data) print("yo!"); return {tem = "TEMMIE"} end)
+  --[[
   Task.Spawn(function()
     local d, code, err
     while true do
@@ -53,6 +55,7 @@ function API.ResetSorageKey(netref)
       end
     end
   end)
+  ]]
 end
 
 
@@ -158,6 +161,10 @@ end
 -- Quick utility function for recursively
 -- printing out a table with subtables.
 function API.DisplayTable(t, indent)
+  if t == nil then 
+    print("[NIL]")
+    return
+  end
   if indent == nil then indent = 0 end
   if indent == 0 then print("-------------") end
   for k,v in pairs(t) do
@@ -166,6 +173,54 @@ function API.DisplayTable(t, indent)
       API.DisplayTable(v, indent + 2)
     else
       print(string.rep(" ", indent) .. k .. " : " .. tostring(v))
+    end
+  end
+end
+
+
+
+local writeTaskData = {}
+--[[
+  fqueue = {}
+  task = {}
+  taskStart = -1
+]]
+
+function API.EnqueueWrite(netref, func)
+  if writeTaskData[netref] == nil then
+    writeTaskData[netref] = {
+      fqueue = {},
+      task = nil,
+    }
+  end
+
+  local taskData = writeTaskData[netref]
+  table.insert(taskData.fqueue, func)
+  if taskData.task == nil then 
+    taskData.task = Task.Spawn(function() WriteTask(netref) end)
+  end
+end
+
+function WriteTask(netref)
+  while true do
+    while Storage.HasPendingSetConcurrentCreatorData(netref) do
+      Task.Wait()
+    end
+
+    local d, code, err = Storage.SetConcurrentCreatorData(netref, function(data)
+      for k,f in ipairs(writeTaskData[netref].fqueue) do
+        data = f(data)
+      end
+      print(":write complete:")
+      return data
+    end)
+
+    if code == StorageResultCode.SUCCESS then 
+      print("successfully completed queue!")
+      writeTaskData[netref] = nil
+      return
+    else
+      warn("Could not write data queue: " .. tostring(code) .. " " .. err)
     end
   end
 end

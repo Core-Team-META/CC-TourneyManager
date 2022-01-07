@@ -41,13 +41,14 @@ API = {}
 
 
 
-API.LeagueState = {
+local LeagueState = {
   CLOSED = 0,
   OPEN_FOR_ENTRY = 1,
   MATCHES = 2,
   MATCHES_COMPLETE = 3,
   LEAGUE_COMPLETE = 4,
 }
+API.LeagueState = LeagueState
 
 
 
@@ -81,6 +82,7 @@ function GetLeagueData()
     warn("Error retrieving league data.")
     return nil
   end
+  print("alldata:")
   cu.DisplayTable(allData)
   return allData.leagueData
 end
@@ -91,16 +93,22 @@ function API.StartLeague(forceRestart)
   local leagueData = GetLeagueData()
 
   print("StartingLeague!")
-  Storage.SetConcurrentCreatorData(netref, function(data)
+  local d = Storage.SetConcurrentCreatorData(netref, function(data)
     print(forceRestart, data.state)
-    if not (forceRestart or data.state == LeagueState.CLOSED) then
+    print("<<<<<")
+    cu.DisplayTable(data)
+    print("<<<<<")
+    local leagueData = data.leagueData
+
+    if leagueData ~= nil and leagueData.state ~= LeagueState.LEAGUE_COMPLETE then
       warn("League already in progress...")
       return data
     else
+      print("Writing starting league data")
       data = {
         state = LeagueState.OPEN_FOR_ENTRY,
         startTime = os.time(),
-        phaseEndTime = os.time + SIGNUP_WINDOW,
+        phaseEndTime = os.time() + SIGNUP_WINDOW,
         playerEntries = {},
         matches = {},
         defaultMatchSize = defaultMatchSize,
@@ -111,6 +119,9 @@ function API.StartLeague(forceRestart)
       return {leagueData = data}
     end
   end)
+  print("wrote data")
+  cu.DisplayTable(d)
+
 end
 
 
@@ -142,7 +153,7 @@ end
 
 function API.DebugOut()
   local leagueData = GetLeagueData()
-  print("Current League Status:")
+  print("Current League Status:", leagueData)
   print("-------------------")
   cu.DisplayTable(leagueData)
   print("-------------------")
@@ -157,7 +168,7 @@ function API.AdvanceLeagueState()
     Task.Wait()
   end
   local currentLeagueData = GetLeagueData()
-  local currentState = 
+  local currentState = currentLeagueData.state
 
   d, code, err = Storage.SetConcurrentCreatorData(netref, function(data)
     local tableToModify = EvaluatePath(data, path)
@@ -246,12 +257,11 @@ function API.AdvanceLeague()
       leagueData.state = LEAGUE_COMPLETE
     end
   end
-
-
 end
 
 
 
 
 return API
+
 
