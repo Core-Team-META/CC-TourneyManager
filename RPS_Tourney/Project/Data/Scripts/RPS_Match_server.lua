@@ -88,6 +88,23 @@ function DisplayMatchResults()
     warn("Somehow no one lost the match, but it also wasn't a draw??")
     print(s1, s2)
   end
+  
+  --[[
+	local TextCode = {
+	  GAME_START = 1,
+	  YOU_WIN = 2,
+	  YOU_LOSE = 3,
+	  TIED = 4,
+	  GOT_BYE = 5,
+	  WINNER = 6
+	}
+  ]]
+  
+  
+  if isDraw then
+--    Events.BroadcastToPlayer(winner, RPS_DT, )
+  else
+  end
 
   Task.Wait(3)
   if not isDraw then

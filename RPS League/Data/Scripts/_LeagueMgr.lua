@@ -22,7 +22,7 @@ Structures:
   {
         state = LeagueState.OPEN_FOR_ENTRY,
         startTime = os.time(),
-        phaseEndTime = -1,
+        stateEndTime = -1,
         playerEntries = {},
         matches = {},
         defaultMatchSize = defaultMatchSize,
@@ -34,7 +34,6 @@ Structures:
 
 -- Custom 
 local _CONC_UTILS = script:GetCustomProperty("_ConcUtils")
-local CONCUR_CREATOR_LEAGUE = script:GetCustomProperty("ConcurCreatorLeague") ---@type NetReference
 local cu = require(_CONC_UTILS)
 
 API = {}
@@ -51,40 +50,82 @@ local LeagueState = {
 API.LeagueState = LeagueState
 
 
+local currentLeagueState = -1
+local currentEndTime = -1
+
 
 -- Register:
 local SECONDS = 1
 local MINUTES = 60 * SECONDS
 local HOURS = 60 * MINUTES
 local DAYS = 24 * HOURS
+
 local netref = nil
 
-local SIGNUP_WINDOW = 15 * MINUTES
-local MATCH_WINDOW = 1 * DAYS
+--local SIGNUP_WINDOW = 1 * MINUTES
+--local MATCH_WINDOW = 1 * DAYS
+
+local SIGNUP_WINDOW = 10 * SECONDS
+local MATCH_WINDOW = 10 * SECONDS
+
+
+
 
 -- Should be called on startup
+
+
+function GetLeagueData()
+  local allData = Storage.GetConcurrentCreatorData(netref)
+  if allData == nil then
+    warn("Error retrieving league data.")
+    return nil
+  end
+  --print("alldata:")
+  --cu.DisplayTable(allData)
+  return allData.leagueData
+end
+
+
 
 function API.Initialize(leagueNetref)
   netref = leagueNetref
   print("initializing league manager")
   -- Check to see if the signup or match window has closed,
   -- and proceed accordingly.
+
+  local leagueData = GetLeagueData()
+  if leagueData ~= nil then
+    currentLeagueState = leagueData.state or -1
+    currentEndTime = leagueData.stateEndTime or -1
+  end
+
+  Storage.ConnectToConcurrentCreatorDataChanged(leagueNetref, OnConcurrentDataChanged)
+
+  local tickTask = Task.Spawn(Tick)
+  tickTask.repeatInterval = 1
+  tickTask.repeatCount = -1
 end
 
 
+function OnConcurrentDataChanged(netref, data)
+  local leagueData = data.leagueData
+  print("storage changed!", leagueData, currentLeagueState)
+  if leagueData ~= nil then print("currentState =", leagueData.state) end
+  if leagueData == nil or leagueData.state == currentLeagueState then return end
 
-
-
-function GetLeagueData()
-
-  local allData = Storage.GetConcurrentCreatorData(netref)
-  if allData == nil then
-    warn("Error retrieving league data.")
-    return nil
+  -- new state!
+  if leagueData.state == LeagueState.OPEN_FOR_ENTRY then
+    print("STATE: open for entry!")
+  elseif leagueData.state == LeagueState.MATCHES then
+    print("STATE: Matches are happening!")
+    -- TODO end all unfinsihed matches with double-losers
+  elseif leagueData.state == LeagueState.MATCHES_COMPLETE then
+    print("STATE: matches are complete!")
+  elseif leagueData.state == LEAGUE_COMPLETE then
+    print("STATE: league is complete!")
   end
-  print("alldata:")
-  cu.DisplayTable(allData)
-  return allData.leagueData
+  currentLeagueState = leagueData.state or -1
+  currentEndTime = leagueData.stateEndTime or -1
 end
 
 
@@ -93,11 +134,9 @@ function API.StartLeague(forceRestart)
   local leagueData = GetLeagueData()
 
   print("StartingLeague!")
-  local d = Storage.SetConcurrentCreatorData(netref, function(data)
-    print(forceRestart, data.state)
-    print("<<<<<")
+
+  cu.WriteCCDataYield(netref, function(data)
     cu.DisplayTable(data)
-    print("<<<<<")
     local leagueData = data.leagueData
 
     if leagueData ~= nil and leagueData.state ~= LeagueState.LEAGUE_COMPLETE then
@@ -108,7 +147,7 @@ function API.StartLeague(forceRestart)
       data = {
         state = LeagueState.OPEN_FOR_ENTRY,
         startTime = os.time(),
-        phaseEndTime = os.time() + SIGNUP_WINDOW,
+        stateEndTime = os.time() + SIGNUP_WINDOW,
         playerEntries = {},
         matches = {},
         defaultMatchSize = defaultMatchSize,
@@ -119,36 +158,56 @@ function API.StartLeague(forceRestart)
       return {leagueData = data}
     end
   end)
+
   print("wrote data")
   cu.DisplayTable(d)
 
 end
 
 
-
-
-
-
 function API.PlayerSignup(player)
+  print("-----Signing up!")
   local leagueData = GetLeagueData()
+  --[[
   if leagueData.state ~= LeagueState.OPEN_FOR_ENTRY then
     warn("Tried to sign up when signup was closed.")
     return
   end
+  ]]
 
-  local playerEntry = {
-    playerId = player.id,
-    matchHistory = {},
-    points = 0,
-    isEliminated = false
-  }
+  cu.WriteCCData(netref, function(data)
+    local leagueData = data.leagueData
 
-  cu.AddPairToTable(player.id, playerEntry, "leagueData.playerEntries", netref, true)
+    for k,v in pairs(leagueData.playerEntries) do
+      if v.playerId == player.id then
+        warn("Player already registered!")
+        --return
+      end
+    end
+
+  if leagueData.state ~= LeagueState.OPEN_FOR_ENTRY then
+    warn("Tried to sign up when signup was closed.")
+   return
+  end
+
+    local playerEntry = {
+      playerId = player.id,
+      matchHistory = {},
+      points = 0,
+      isEliminated = false
+    }
+
+    table.insert(leagueData.playerEntries, playerEntry)
+    return data
+  end)
 end
 
 
 function API.ResetSorageKey()
   cu.ResetSorageKey(netref)
+  currentLeagueState = -1
+  currentEndTime = -1
+
 end
 
 function API.DebugOut()
@@ -161,36 +220,83 @@ end
 
 
 
-
-
-function API.AdvanceLeagueState()
-  while Storage.HasPendingSetConcurrentCreatorData(netref) do
-    Task.Wait()
-  end
-  local currentLeagueData = GetLeagueData()
-  local currentState = currentLeagueData.state
-
-  d, code, err = Storage.SetConcurrentCreatorData(netref, function(data)
-    local tableToModify = EvaluatePath(data, path)
-    for k,v in pairs(AddPairToTable_data[dataKey]) do
-      if not (ensureUnique and tableToModify[v.k] ~= nil) then
-        tableToModify[v.k] = v.v
-      else
-        print("Blocked becuse not unique")
-      end
+function API.AdvanceLeagueState(expectedCurrentState, newState)
+  cu.WriteCCData(netref, function(data)
+    local leagueData = data.leagueData
+    if leagueData.state ~= expectedCurrentState then
+      print("Skipping advanceLeagueState because states no longer match.", leagueData.state)
+      return data
     end
 
+    leagueData.state = newState
     return data
   end)
+end
 
-  if code == StorageResultCode.SUCCESS then 
-    print("successful write!")
-    AddPairToTable_data = {}
-    return
-  else
-    warn("Could not write data: (pairs) " .. tostring(code) .. " " .. err)
+
+function FormatTime(seconds)
+
+end
+
+
+function PrettyTime(t)
+  local days = t // DAYS
+  t = t % DAYS
+  local hours = t // HOURS
+  t = t % HOURS
+  local minutes = t // MINUTES
+  t = t % MINUTES
+  local seconds = t // SECONDS
+  local result = ""
+  local forceDisplay = false
+
+  if days > 0 then
+    forceDisplay = true
+    result = result .. string.format("%02d:", days)
+  end
+  if hours > 0 or forceDisplay then
+    forceDisplay = true
+    result = result .. string.format("%02d:", hours)
+  end
+  if minutes > 0 or forceDisplay then
+    forceDisplay = true
+    result = result .. string.format("%02d:", minutes)
   end
 
+  result = result .. string.format("%02d", seconds)
+
+  return result
+end
+
+
+function Tick()
+  local timeRemaining = currentEndTime - os.time()
+  print(currentEndTime, PrettyTime(timeRemaining))
+  if timeRemaining < 0 and currentEndTime ~= -1 then
+    StateTimeUp()
+  end
+end
+
+
+
+function StateTimeUp()
+  currentEndTime = -1
+
+  local leagueData = GetLeagueData()
+  if leagueData.state == LeagueState.OPEN_FOR_ENTRY then
+    print("Time up! - no longer open")
+    -- TODO generate matches.
+    leagueData.state = LeagueState.MATCHES
+  elseif leagueData.state == LeagueState.MATCHES then
+    print("Time up! - no longer matches")
+    -- TODO end all unfinsihed matches with double-losers
+    leagueData.state = LeagueState.MATCHES_COMPLETE
+  elseif leagueData.state == LeagueState.MATCHES_COMPLETE then
+    print("Time up! - match time complete")
+    if leagueData.isComplete then
+      leagueData.state = LEAGUE_COMPLETE
+    end
+  end
 end
 
 --[[
@@ -242,22 +348,6 @@ function API.AddPairToTable(key, val, path, netref, ensureUnique)
 end
 
 ]]
-
-
-function API.AdvanceLeague()
-  local leagueData = GetLeagueData()
-  if leagueData.state == LeagueState.OPEN_FOR_ENTRY then
-    -- TODO generate matches.
-    leagueData.state = LeagueState.MATCHES
-  elseif leagueData.state == LeagueState.MATCHES then
-    -- TODO end all unfinsihed matches with double-losers
-    leagueData.state = LeagueState.MATCHES_COMPLETE
-  elseif leagueData.state == LeagueState.MATCHES_COMPLETE then
-    if leagueData.isComplete then
-      leagueData.state = LEAGUE_COMPLETE
-    end
-  end
-end
 
 
 

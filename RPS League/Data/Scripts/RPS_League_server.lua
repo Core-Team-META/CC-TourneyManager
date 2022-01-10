@@ -25,7 +25,7 @@ end
 
 
 function OnPlayerSignup(player)
-  print("asdfasdf", player.name)
+  print("Signup:", player.name)
 
   lm.PlayerSignup(player)
   -- make sure player is not already in entrants

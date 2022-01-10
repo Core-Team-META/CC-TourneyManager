@@ -7,6 +7,8 @@ local propBtn_Scissors = script:GetCustomProperty("btn_Scissors"):WaitForObject(
 local propTimerBar = script:GetCustomProperty("TimerBar"):WaitForObject()
 local propHighlight = script:GetCustomProperty("Highlight"):WaitForObject()
 local propButtonClickPressCore01SFX = script:GetCustomProperty("ButtonClickPressCore01SFX"):WaitForObject()
+local propAnnouncementText = script:GetCustomProperty("AnnouncementText"):WaitForObject() ---@type UIText
+local propAnnouncementPanel = script:GetCustomProperty("AnnouncementPanel"):WaitForObject() ---@type UIPanel
 
 local iconLabels = propRPS_UI:FindDescendantsByName("IconLabel")
 local icons = {propBtn_Rock, propBtn_Paper, propBtn_Scissors}
@@ -104,12 +106,47 @@ function OnIconClicked(btn)
   end
 end
 
+
+local hideTextTask = nil
+local TextCode = {
+  GAME_START = 1,
+  YOU_WIN = 2,
+  YOU_LOSE = 3,
+  TIED = 4,
+  GOT_BYE = 5,
+  WINNER = 6
+}
+
+local TextString = {
+  "RPS... GO!",
+  "You win the match!",
+  "You lost the match!",
+  "It's a tie!  Do over!",
+  "You got a bye!  You'll play next round.",
+  "%s is the winner!"
+}
+
+function DisplayText(textCode, targetPlayer)
+  propAnnouncementText.text = (string.format(TextString[textCode], targetPlayer.name))
+  propAnnouncementPanel.visibility = Visibility.INHERRIT
+  
+  if hideTextTask ~= nil then hideTextTask:Cancel() end
+  Task.Spawn(function()
+    Task.Wait(TEXT_DISPLAY_TIME)
+    propAnnouncementPanel.visibility = Visibility.FORCE_OFF
+  end)
+end
+
+
+
+
 for k,v in pairs(icons) do
   v.clickedEvent:Connect(OnIconClicked)
 end
 
 player.bindingPressedEvent:Connect(OnBindingPressed)
 Events.Connect("RPS_SC", StartChoice)
+Events.Connect("RPS_DT", DisplayText)
 
 
 --StartChoice()

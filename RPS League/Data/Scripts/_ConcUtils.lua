@@ -1,63 +1,9 @@
-
-
 local API = {}
 
 
-function EvaluatePath(root, path)
-  pathList = {CoreString.Split(path, ".")}
-  local result = root
-  for k,v in ipairs(pathList) do
-    if k < (#pathList - 1) then
-      if result[v] == nil then result[v] = {} end
-    end
-    result = result[v]
-  end
-  return result
-end
-
-
-
---[[
-local test = {
-  val1 = 5,
-  val2 = "hello", 
-  val3 = {
-    a = "AAAA",
-    b = 23334,
-    c = {
-      deepVal = "hi"
-    }
-
-  }
-}
-print(test.val3.c.deepVal)
-local val = EvaluatePath(test, "val3.c")
-val.deepVal = "goodbye"
-print(test.val3.c.deepVal)
-]]
-
-
-
 function API.ResetSorageKey(netref)
-  API.EnqueueWrite(netref, function(data) print("yo!"); return {tem = "TEMMIE"} end)
-  --[[
-  Task.Spawn(function()
-    local d, code, err
-    while true do
-      while Storage.HasPendingSetConcurrentCreatorData(netref) do
-        Task.Wait()
-      end
-      d, code, err = Storage.SetConcurrentCreatorData(netref, function(data)
-        return {}
-      end)
-      if code ~= StorageResultCode.SUCCESS then 
-        warn("Could not reset storage key:", code, err)
-      end
-    end
-  end)
-  ]]
+  EnqueueWrite(netref, function(data) return {} end)
 end
-
 
 
 function DoesArrayContainValue(array, val)
@@ -65,96 +11,6 @@ function DoesArrayContainValue(array, val)
     if v == val then return true end
   end
   return false
-end
-
-
-
-function API.SetValue(val, path, netref)
-  -- PathToParent is the same as path, but with the last value chopped off.
-  local temp = {CoreString.Split(path, ".")}
-  local pathToParent = ""
-  local fieldName = temp[#temp]
-  for i = 1, #temp - 1 do
-    if i > 1 then
-      pathToParent = pathToParent .. "."
-    end  
-    pathToParent = pathToParent .. temp[i]
-  end
-  print("path to parent:", pathToParent, fieldName)
-
-  Task.Spawn(function()
-    local d, code, err
-    while true do
-      while Storage.HasPendingSetConcurrentCreatorData(netref) do
-        Task.Wait()
-      end
-
-      d, code, err = Storage.SetConcurrentCreatorData(netref, function(data)
-        local parentTable = EvaluatePath(data, pathToParent)
-        parentTable[fieldName] = value
-
-        return data
-      end)
-      if code == StorageResultCode.SUCCESS then 
-        print("successful write!")
-        AddPairToTable_data = {}
-        return
-      else
-        warn("Could not write data: (pairs) " .. tostring(code) .. " " .. err)
-      end
-    end
-  end)
-
-end
-
-
-
-local AddPairToTable_data = {}
-
-function API.AddPairToTable(key, val, path, netref, ensureUnique)
-  local dataKey = key
-  local shouldStartRequest = false
-
-  if AddPairToTable_data[dataKey] == nil then
-    AddPairToTable_data[dataKey] = {}
-    shouldStartRequest = true
-  end
-
-  table.insert(AddPairToTable_data[dataKey], {k = key, v = val})
-  print("***********")
-  API.DisplayTable(AddPairToTable_data[dataKey])
-
-  if shouldStartRequest then
-    Task.Spawn(function()
-      local d, code, err
-      while true do
-        while Storage.HasPendingSetConcurrentCreatorData(netref) do
-          Task.Wait()
-        end
-
-        d, code, err = Storage.SetConcurrentCreatorData(netref, function(data)
-          local tableToModify = EvaluatePath(data, path)
-          for k,v in pairs(AddPairToTable_data[dataKey]) do
-            if not (ensureUnique and tableToModify[v.k] ~= nil) then
-              tableToModify[v.k] = v.v
-            else
-              print("Blocked becuse not unique")
-            end
-          end
-
-          return data
-        end)
-        if code == StorageResultCode.SUCCESS then 
-          print("successful write!")
-          AddPairToTable_data = {}
-          return
-        else
-          warn("Could not write data: (pairs) " .. tostring(code) .. " " .. err)
-        end
-      end
-    end)
-  end
-
 end
 
 
@@ -186,7 +42,19 @@ local writeTaskData = {}
   taskStart = -1
 ]]
 
-function API.EnqueueWrite(netref, func)
+
+function API.WriteCCData(netref, func)
+  EnqueueWrite(netref, func, false)
+end
+
+function API.WriteCCDataYield(netref, func)
+  EnqueueWrite(netref, func, true)
+end
+
+
+function EnqueueWrite(netref, func, shouldYield)
+  --print("Enqueue:  Netref = ", netref)
+  --print(CoreDebug.GetStackTrace())
   if writeTaskData[netref] == nil then
     writeTaskData[netref] = {
       fqueue = {},
@@ -198,6 +66,10 @@ function API.EnqueueWrite(netref, func)
   table.insert(taskData.fqueue, func)
   if taskData.task == nil then 
     taskData.task = Task.Spawn(function() WriteTask(netref) end)
+  end
+
+  while shouldYield and writeTaskData[netref] ~= nil do
+    Task.Wait()
   end
 end
 
@@ -218,6 +90,7 @@ function WriteTask(netref)
     if code == StorageResultCode.SUCCESS then 
       print("successfully completed queue!")
       writeTaskData[netref] = nil
+      Events.Broadcast("CU_Write", netref)
       return
     else
       warn("Could not write data queue: " .. tostring(code) .. " " .. err)

@@ -1,6 +1,6 @@
 Assets {
-  Id: 8084950649183724693
-  Name: "EasingEquations"
+  Id: 14931330070017632175
+  Name: "RPS_AnnounceText"
   PlatformAssetType: 3
   TextAsset {
     CustomParameters {
