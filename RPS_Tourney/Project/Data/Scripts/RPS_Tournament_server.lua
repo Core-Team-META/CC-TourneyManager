@@ -4,6 +4,15 @@ local propRPS_WorldIcon_Winner = script:GetCustomProperty("RPS_WorldIcon_Winner"
 
 local Tournament = require(prop_TournamentMgr)
 
+local TextCode = {
+  GAME_START = 1,
+  YOU_WIN = 2,
+  YOU_LOSE = 3,
+  IS_DRAW = 4,
+  GOT_BYE = 5,
+  ANNOUNCE_WINNER = 6
+}
+
 local tourney = nil -- Tournament.New()
 
 local spawnedStages = {}
@@ -52,6 +61,7 @@ function StartRound()
     else
       -- Someone got a bye!
       print("No match for", match.playerIds[1])
+      Events.BroadcastToPlayer(Game.FindPlayer(match.playerIds[1]), "RPS_DT", TextCode.GOT_BYE)
       tourney:SubmitScore(match.playerIds[1], 1)
     end
   end
@@ -77,7 +87,11 @@ end
 
 function OnTournamentEnd(winnerList)
   print("The winner is", winnerList[1], winnerList)
-  World.SpawnAsset(propRPS_WorldIcon_Winner, {position = Game.FindPlayer(winnerList):GetWorldPosition()})
+  local winnerPlayer = Game.FindPlayer(winnerList)
+  Events.BroadcastToAllPlayers("RPS_DT", TextCode.ANNOUNCE_WINNER, winnerPlayer)
+  print("Broadcast complete")
+
+  World.SpawnAsset(propRPS_WorldIcon_Winner, {position = winnerPlayer:GetWorldPosition()})
   for k,v in pairs(listeners) do
     v:Disconnect()
   end

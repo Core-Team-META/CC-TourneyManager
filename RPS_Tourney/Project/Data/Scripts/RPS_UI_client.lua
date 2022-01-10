@@ -12,6 +12,11 @@ local propAnnouncementPanel = script:GetCustomProperty("AnnouncementPanel"):Wait
 
 local iconLabels = propRPS_UI:FindDescendantsByName("IconLabel")
 local icons = {propBtn_Rock, propBtn_Paper, propBtn_Scissors}
+
+
+local TEXT_DISPLAY_TIME = 3
+
+
 local reverseIcons = {}
 -- make a quick reverse lookup
 for k,v in pairs(icons) do
@@ -114,7 +119,7 @@ local TextCode = {
   YOU_LOSE = 3,
   TIED = 4,
   GOT_BYE = 5,
-  WINNER = 6
+  ANNOUNCE_WINNER = 6
 }
 
 local TextString = {
@@ -127,13 +132,16 @@ local TextString = {
 }
 
 function DisplayText(textCode, targetPlayer)
-  propAnnouncementText.text = (string.format(TextString[textCode], targetPlayer.name))
-  propAnnouncementPanel.visibility = Visibility.INHERRIT
+  local name = (targetPlayer or {name = ""}).name
+  propAnnouncementText.text = (string.format(TextString[textCode], name))
+  propAnnouncementPanel.visibility = Visibility.INHERIT
+  print("Displaying text!", propAnnouncementText.text)
   
   if hideTextTask ~= nil then hideTextTask:Cancel() end
   Task.Spawn(function()
     Task.Wait(TEXT_DISPLAY_TIME)
     propAnnouncementPanel.visibility = Visibility.FORCE_OFF
+    hideTextTask = nil
   end)
 end
 

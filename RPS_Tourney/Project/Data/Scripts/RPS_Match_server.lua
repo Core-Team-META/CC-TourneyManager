@@ -51,7 +51,15 @@ end
 
 local STANCE = "unarmed_stance"
 
-
+local TextCode = {
+  GAME_START = 1,
+  YOU_WIN = 2,
+  YOU_LOSE = 3,
+  IS_DRAW = 4,
+  GOT_BYE = 5,
+  WINNER = 6
+}
+  
 function DisplayMatchResults()
   print("Match results!")
   local spawnedActions = {}
@@ -89,23 +97,7 @@ function DisplayMatchResults()
     print(s1, s2)
   end
   
-  --[[
-	local TextCode = {
-	  GAME_START = 1,
-	  YOU_WIN = 2,
-	  YOU_LOSE = 3,
-	  TIED = 4,
-	  GOT_BYE = 5,
-	  WINNER = 6
-	}
-  ]]
   
-  
-  if isDraw then
---    Events.BroadcastToPlayer(winner, RPS_DT, )
-  else
-  end
-
   Task.Wait(3)
   if not isDraw then
     currentMatchState = STATE_GAME_NOT_STARTED
@@ -123,8 +115,12 @@ function DisplayMatchResults()
     Events.Broadcast("RPS_Result", winner.pid, 1)
     Events.Broadcast("RPS_Result", loser.pid, 0)
     print("Winner:", winner.player.name)
+    Events.BroadcastToPlayer(winner.player, "RPS_DT", TextCode.YOU_WIN)
+    Events.BroadcastToPlayer(loser.player, "RPS_DT", TextCode.YOU_LOSE)
   else
     print("It was a draw!")
+    Events.BroadcastToPlayer(winner.player, "RPS_DT", TextCode.IS_DRAW)
+    Events.BroadcastToPlayer(loser.player, "RPS_DT", TextCode.IS_DRAW)
     Task.Wait(2)
     currentMatchState = STATE_WAITING_FOR_MOVES
     StartMatch(plist[1].pid, plist[2].pid) 
