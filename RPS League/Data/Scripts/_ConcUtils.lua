@@ -6,7 +6,7 @@ function API.ResetSorageKey(netref)
 end
 
 
-function DoesArrayContainValue(array, val)
+function IsValueInArray(val, array)
   for k,v in pairs(array) do
     if v == val then return true end
   end

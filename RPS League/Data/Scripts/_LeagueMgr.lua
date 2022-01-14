@@ -4,18 +4,17 @@ Structures:
   PlayerEntry
   {
     playerId = playerId, -- Some unique identifier for the player.  Player.id is fine.
-    matchHistory = {}, -- List of matchIDs that this player has participated in
-    points = 0, -- Total points accumulated.
-    isEliminated = false
+    name = name, -- display name for player
+    scores = {}, -- all scores from all completed matches
   }
 
   Match
   {
-    playerIds = playerIdList,
-    playerScores = {}, -- Map of playerId -> score
-    round = round, -- What round of the tournament the match was on
-    id = tournament:GetNewMatchId(), -- Unique ID for the match
-    isComplete = false,
+        playerIds = playersInMatch,
+        playerScores = {}, -- Map of playerId -> score
+        round = leagueData.currentRound
+        isComplete = false,
+        matchId = k, -- index in the list.  an ID for the match.
   }
 
   League
@@ -28,7 +27,7 @@ Structures:
         defaultMatchSize = defaultMatchSize,
         maxWinners = maxWinners,
         currentRound = 0,
-        nextMatchId = 0,      
+        nextMatchId = 0,
   }
 ]]
 
@@ -62,11 +61,11 @@ local DAYS = 24 * HOURS
 
 local netref = nil
 
---local SIGNUP_WINDOW = 1 * MINUTES
---local MATCH_WINDOW = 1 * DAYS
+local SIGNUP_WINDOW = 1 * DAYS
+local MATCH_WINDOW = 1 * DAYS
 
-local SIGNUP_WINDOW = 10 * SECONDS
-local MATCH_WINDOW = 10 * SECONDS
+--local SIGNUP_WINDOW = 10 * SECONDS
+--local MATCH_WINDOW = 10 * SECONDS
 
 
 
@@ -104,6 +103,9 @@ function API.Initialize(leagueNetref)
   local tickTask = Task.Spawn(Tick)
   tickTask.repeatInterval = 1
   tickTask.repeatCount = -1
+
+  UpdateAllClientData()
+  Game.playerJoinedEvent:Connect(function(player) UpdateClientData(player); end)
 end
 
 
@@ -129,6 +131,44 @@ function OnConcurrentDataChanged(netref, data)
 end
 
 
+function IsValueInArray(val, array)
+  for k,v in pairs(array) do
+    if v == val then return true end
+  end
+  return false
+end
+
+function API.IsPlayerInLeague(pid)
+  local leagueData = GetLeagueData()
+  for k,entry in pairs(leagueData.playerEntries) do
+    if pid == entry.playerId then return true end
+  end
+  return false
+end
+
+
+function API.GetAllMatches()
+  local leagueData = GetLeagueData()
+  return leagueData.matches
+end
+
+
+function API.GetMatchesForPlayer(leagueData, pid)
+  print("Finding matches for player ", pid, #leagueData.matches)
+  results = {}
+  for k, match in pairs(leagueData.matches) do
+    cu.DisplayTable(match)
+    for kk, id in pairs(match.playerIds) do
+      print(id, pid)
+      if id == pid then
+        table.insert(results, match)
+        break
+      end
+    end
+  end
+  print("Results:" , #results)
+  return results
+end
 
 function API.StartLeague(forceRestart)
   local leagueData = GetLeagueData()
@@ -161,11 +201,57 @@ function API.StartLeague(forceRestart)
 
   print("wrote data")
   cu.DisplayTable(d)
-
 end
 
 
-function API.PlayerSignup(player)
+function GenerateNewMatches(leagueData)
+  local newMatches = {}
+  print("---------GENERATING NEW MATCHES")
+  cu.DisplayTable(leagueData.playerEntries)
+
+  for i = 1, #(leagueData.playerEntries) do
+    for j = i, #(leagueData.playerEntries) do
+
+      local playersInMatch = {leagueData.playerEntries[i].playerId, leagueData.playerEntries[j].playerId}
+      local newMatch =   {
+        playerIds = playersInMatch,
+        playerScores = {}, -- Map of playerId -> score
+        matchId = #newMatches + 1,
+        round = leagueData.currentRound,
+        isComplete = false,
+      }
+
+      table.insert(newMatches, newMatch)
+    end
+  end
+  
+  return newMatches
+end
+
+
+
+function UpdateAllClientData()
+  local leagueData = GetLeagueData()
+  for _, p in pairs(Game.GetPlayers()) do
+    UpdateClientData(p, leagueData)
+  end
+end
+
+function UpdateClientData(p, leagueData)
+  print("Updating client data for", p.name)
+    local isInLeague = API.IsPlayerInLeague(p.id)
+    local matches = {}
+    if isInLeague then matches = API.GetMatchesForPlayer(leagueData, p.id) end
+    print("Found matches:")
+    cu.DisplayTable(matches)
+    p:SetPrivateNetworkedData("LG_PlayerData", {
+      isInLeague = isInLeague,
+      matches = matches,
+      state = leagueData.state
+    })
+end
+
+function API.PlayerSignup(playerId, playerName)
   print("-----Signing up!")
   local leagueData = GetLeagueData()
   --[[
@@ -179,9 +265,9 @@ function API.PlayerSignup(player)
     local leagueData = data.leagueData
 
     for k,v in pairs(leagueData.playerEntries) do
-      if v.playerId == player.id then
-        warn("Player already registered!")
-        --return
+      if v.playerId == playerId then
+        warn("Player already registered!", playerId)
+        return
       end
     end
 
@@ -191,10 +277,9 @@ function API.PlayerSignup(player)
   end
 
     local playerEntry = {
-      playerId = player.id,
-      matchHistory = {},
-      points = 0,
-      isEliminated = false
+      playerId = playerId,
+      name = playerName,
+      scores = {},
     }
 
     table.insert(leagueData.playerEntries, playerEntry)
@@ -210,6 +295,22 @@ function API.ResetSorageKey()
 
 end
 
+
+
+function API.ReportMatchResult(matchId, scoreTable)
+  local leagueData = GetLeagueData()
+  if leagueData.state ~= LeagueState.MATCHES then
+    warn("Tried to submit match score after matches are done! " .. tostring(matchId))
+    return
+  end
+
+  local match = leagueData.matches[matchId]
+  if match == nil then
+    warn("Could not find match for matchid " .. tostring(matchId))
+    return
+  end
+end
+
 function API.DebugOut()
   local leagueData = GetLeagueData()
   print("Current League Status:", leagueData)
@@ -219,24 +320,89 @@ function API.DebugOut()
 end
 
 
+function API.DebugAdvance()
+  local leagueData = GetLeagueData()
+  print("Debug advance!", leagueData.stat)
+  if leagueData.state == LeagueState.OPEN_FOR_ENTRY then
+    print("Debug - advancing to matches")
+    API.AdvanceLeagueState(LeagueState.OPEN_FOR_ENTRY, LeagueState.MATCHES, true)
+  elseif leagueData.state == LeagueState.MATCHES then
+    API.AdvanceLeagueState(LeagueState.MATCHES, LeagueState.LEAGUE_COMPLETE, true)
+    print("Debug - advancing to matches")
+  end
+end
 
-function API.AdvanceLeagueState(expectedCurrentState, newState)
-  cu.WriteCCData(netref, function(data)
+
+
+function API.AdvanceLeagueState(expectedCurrentState, newState, debugResetTime)
+  debugResetTime = debugResetTime or false
+  cu.WriteCCDataYield(netref, function(data)
     local leagueData = data.leagueData
     if leagueData.state ~= expectedCurrentState then
       print("Skipping advanceLeagueState because states no longer match.", leagueData.state)
       return data
     end
-
+    if newState == LeagueState.MATCHES then
+      AdvanceState_Matches(leagueData, debugResetTime)
+    elseif newState == LeagueState.LEAGUE_COMPLETE then
+      AdvanceState_Complete(leagueData, debugResetTime)
+    end
     leagueData.state = newState
     return data
   end)
+  print("0------------")
+  UpdateAllClientData()
+end
+
+function AdvanceState_Matches(leagueData, debugResetTime)
+  -- generate matches
+  leagueData.matches = GenerateNewMatches(leagueData)
+  leagueData.stateEndTime = leagueData.stateEndTime + MATCH_WINDOW
+  if debugResetTime then leagueData.stateEndTime = os.time() + MATCH_WINDOW end
 end
 
 
-function FormatTime(seconds)
+function AdvanceState_Complete(leagueData, debugResetTime)
+  -- End all outstanding matches
+  -- Calculate scores
+  leagueData.stateEndTime = -1
+  local playerMatchScores = {}
+  for k,match in pairs(leagueData.matches) do
+--[[
+        playerIds = playersInMatch,
+        playerScores = {}, -- Map of playerId -> score
+        round = leagueData.currentRound
+        isComplete = false,
+]]
+    local ranking = {table.unpack(match.playerIds)}
+    table.sort(ranking, function(a, b) 
+      -- note that we use > instead of <, to reverse the sort order.
+      -- we're going to use the index as the points awarded for the round.
+      return match.playerScores[a] > match.playerScores[b]
+    end)
 
+    for k, pid in pairs(ranking) do
+      table.insert(playerMatchScores[pid] or {}, k)
+    end
+  end
+
+  for pid, scores in pairs(playerMatchScores) do
+    table.sort(playerMatchScores[pid])
+  end
+
+
+  --[[  
+        playerIds = playersInMatch,
+        playerScores = {}, -- Map of playerId -> score
+        round = leagueData.currentRound
+        isComplete = false,
+]]
+
+  return leagueData
 end
+
+
+
 
 
 function PrettyTime(t)
@@ -284,19 +450,22 @@ function StateTimeUp()
 
   local leagueData = GetLeagueData()
   if leagueData.state == LeagueState.OPEN_FOR_ENTRY then
-    print("Time up! - no longer open")
-    -- TODO generate matches.
-    leagueData.state = LeagueState.MATCHES
+    print("Time up! - starting matches!")
+    API.AdvanceLeagueState(LeagueState.OPEN_FOR_ENTRY, LeagueState.MATCHES)
+    --leagueData.state = LeagueState.MATCHES
   elseif leagueData.state == LeagueState.MATCHES then
-    print("Time up! - no longer matches")
-    -- TODO end all unfinsihed matches with double-losers
-    leagueData.state = LeagueState.MATCHES_COMPLETE
+    print("Time up! - league complete!")
+    API.AdvanceLeagueState(LeagueState.MATCHES, LeagueState.LEAGUE_COMPLETE)
+    --leagueData.state = LeagueState.MATCHES_COMPLETE
+  end
+  --[[
   elseif leagueData.state == LeagueState.MATCHES_COMPLETE then
     print("Time up! - match time complete")
     if leagueData.isComplete then
       leagueData.state = LEAGUE_COMPLETE
     end
   end
+  ]]
 end
 
 --[[
