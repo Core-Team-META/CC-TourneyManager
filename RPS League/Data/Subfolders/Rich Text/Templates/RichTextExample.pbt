@@ -783,6 +783,6 @@ Assets {
   Marketplace {
     Description: "Create fancy text fields with markup!\r\n\r\nSupports a bunch of cool stuff:\r\n\r\n* Colors\r\n* Fonts\r\n* Text Size\r\n* Bold text\r\n* Drop Shadows\r\n* Embedded Images\r\n* Unicode characters!\r\n\r\nAnd more!\r\n\r\nFull code + documentation available at https://github.com/Core-Team-META/CC-Rich-Text\r\n"
   }
-  SerializationVersion: 103
+  SerializationVersion: 104
   DirectlyPublished: true
 }

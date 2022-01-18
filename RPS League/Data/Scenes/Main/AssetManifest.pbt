@@ -84,15 +84,6 @@ Assets {
   }
 }
 Assets {
-  Id: 9384556241076679606
-  Name: "Fantasy Frame 003"
-  PlatformAssetType: 9
-  PrimaryAsset {
-    AssetType: "PlatformBrushAssetRef"
-    AssetId: "UI_Fantasy_Frame_003"
-  }
-}
-Assets {
   Id: 8264534517409794811
   Name: "Abstract Shape 01"
   PlatformAssetType: 9
@@ -108,15 +99,6 @@ Assets {
   PrimaryAsset {
     AssetType: "BlueprintAssetRef"
     AssetId: "CORESKY_Sky"
-  }
-}
-Assets {
-  Id: 6870300947799701576
-  Name: "BG Flat 001"
-  PlatformAssetType: 9
-  PrimaryAsset {
-    AssetType: "PlatformBrushAssetRef"
-    AssetId: "BackgroundNoOutline_020"
   }
 }
 Assets {

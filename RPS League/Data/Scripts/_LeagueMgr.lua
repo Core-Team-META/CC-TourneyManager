@@ -269,19 +269,22 @@ function API.PlayerSignup(playerId, playerName)
     return
   end
   ]]
+  local result = 0
 
-  cu.WriteCCData(netref, function(data)
+  cu.WriteCCDataYield(netref, function(data)
     local leagueData = data.leagueData
 
     for k,v in pairs(leagueData.playerEntries) do
       if v.playerId == playerId then
         warn("Player already registered!", playerId)
+        result = 1
         return data
       end
     end
 
   if leagueData.state ~= LeagueState.OPEN_FOR_ENTRY then
     warn("Tried to sign up when signup was closed.")
+    result = 2
     return data
   end
 
@@ -297,6 +300,7 @@ function API.PlayerSignup(playerId, playerName)
     table.insert(leagueData.playerEntries, playerEntry)
     return data
   end)
+  return result
 end
 
 

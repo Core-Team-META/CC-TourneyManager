@@ -15,16 +15,17 @@ Objects {
     }
   }
   ChildIds: 9086936746104183945
+  ChildIds: 14042633618792588925
   ChildIds: 16813558807825262224
   ChildIds: 10005074784157121906
   ChildIds: 14982843161775482339
   ChildIds: 14766082162712780982
   ChildIds: 7912853222623896491
   ChildIds: 1837897498902402300
-  ChildIds: 16051411215998710975
+  ChildIds: 6634222322559288474
   ChildIds: 15992148758007955753
-  ChildIds: 12877116572563031164
-  ChildIds: 14733931724943505943
+  ChildIds: 15636251591686938926
+  ChildIds: 14356027777712301280
   UnregisteredParameters {
   }
   Collidable_v2 {
@@ -40,6 +41,400 @@ Objects {
   }
   NetworkRelevanceDistance {
     Value: "mc:eproxyrelevance:critical"
+  }
+}
+Objects {
+  Id: 14356027777712301280
+  Name: "ClientContext"
+  Transform {
+    Location {
+    }
+    Rotation {
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 4781671109827199097
+  ChildIds: 17006106894401368554
+  Collidable_v2 {
+    Value: "mc:ecollisionsetting:forceoff"
+  }
+  Visible_v2 {
+    Value: "mc:evisibilitysetting:inheritfromparent"
+  }
+  CameraCollidable {
+    Value: "mc:ecollisionsetting:forceoff"
+  }
+  EditorIndicatorVisibility {
+    Value: "mc:eindicatorvisibility:visiblewhenselected"
+  }
+  NetworkContext {
+  }
+  NetworkRelevanceDistance {
+    Value: "mc:eproxyrelevance:critical"
+  }
+}
+Objects {
+  Id: 17006106894401368554
+  Name: "PlayerMessagePopup_client"
+  Transform {
+    Location {
+    }
+    Rotation {
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 14356027777712301280
+  Collidable_v2 {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  Visible_v2 {
+    Value: "mc:evisibilitysetting:inheritfromparent"
+  }
+  CameraCollidable {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  EditorIndicatorVisibility {
+    Value: "mc:eindicatorvisibility:visiblewhenselected"
+  }
+  Script {
+    ScriptAsset {
+      Id: 11741185008398419170
+    }
+  }
+  NetworkRelevanceDistance {
+    Value: "mc:eproxyrelevance:critical"
+  }
+}
+Objects {
+  Id: 15636251591686938926
+  Name: "RPS stuff"
+  Transform {
+    Location {
+      X: -480
+      Y: -420
+    }
+    Rotation {
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 4781671109827199097
+  ChildIds: 3007624496625844230
+  ChildIds: 12877116572563031164
+  ChildIds: 720725326799022247
+  ChildIds: 14733931724943505943
+  ChildIds: 9733146858676719161
+  ChildIds: 14054138153780161262
+  ChildIds: 14144101746899609121
+  ChildIds: 14233623814300622352
+  ChildIds: 16601890579880113222
+  Collidable_v2 {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  Visible_v2 {
+    Value: "mc:evisibilitysetting:inheritfromparent"
+  }
+  CameraCollidable {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  EditorIndicatorVisibility {
+    Value: "mc:eindicatorvisibility:visiblewhenselected"
+  }
+  Folder {
+    IsGroup: true
+  }
+  NetworkRelevanceDistance {
+    Value: "mc:eproxyrelevance:critical"
+  }
+}
+Objects {
+  Id: 16601890579880113222
+  Name: "LeagueInfo"
+  Transform {
+    Location {
+      X: 980
+      Y: 670
+    }
+    Rotation {
+      Yaw: -35.0000038
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 15636251591686938926
+  TemplateInstance {
+    ParameterOverrideMap {
+      key: 13107605162802794036
+      value {
+        Overrides {
+          Name: "Name"
+          String: "LeagueInfo"
+        }
+        Overrides {
+          Name: "Position"
+          Vector {
+            X: 780
+            Y: -60
+          }
+        }
+        Overrides {
+          Name: "Rotation"
+          Rotator {
+            Yaw: 74.9999695
+          }
+        }
+      }
+    }
+    TemplateAsset {
+      Id: 804130985179010830
+    }
+  }
+}
+Objects {
+  Id: 14233623814300622352
+  Name: "LeagueInfo"
+  Transform {
+    Location {
+      X: -1760
+      Y: -1320
+    }
+    Rotation {
+      Yaw: 120.000008
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 15636251591686938926
+  TemplateInstance {
+    ParameterOverrideMap {
+      key: 13107605162802794036
+      value {
+        Overrides {
+          Name: "Name"
+          String: "LeagueInfo"
+        }
+        Overrides {
+          Name: "Position"
+          Vector {
+            X: 630
+            Y: -1370
+          }
+        }
+        Overrides {
+          Name: "Rotation"
+          Rotator {
+            Yaw: -174.999985
+          }
+        }
+        Overrides {
+          Name: "Scale"
+          Vector {
+            X: 1
+            Y: 1
+            Z: 1
+          }
+        }
+      }
+    }
+    TemplateAsset {
+      Id: 804130985179010830
+    }
+  }
+}
+Objects {
+  Id: 14144101746899609121
+  Name: "RPS_MatchStage"
+  Transform {
+    Location {
+      X: -2740.7876
+      Y: -1746.79639
+      Z: 190
+    }
+    Rotation {
+      Yaw: 100.000008
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 15636251591686938926
+  WantsNetworking: true
+  Collidable_v2 {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  Visible_v2 {
+    Value: "mc:evisibilitysetting:inheritfromparent"
+  }
+  TemplateInstance {
+    ParameterOverrideMap {
+      key: 8456419368000778161
+      value {
+        Overrides {
+          Name: "Name"
+          String: "RPS_MatchStage"
+        }
+        Overrides {
+          Name: "Position"
+          Vector {
+            X: 602.309387
+            Y: -2439.26709
+            Z: 190
+          }
+        }
+        Overrides {
+          Name: "Rotation"
+          Rotator {
+            Yaw: 164.999969
+          }
+        }
+        Overrides {
+          Name: "Scale"
+          Vector {
+            X: 1
+            Y: 1
+            Z: 1
+          }
+        }
+      }
+    }
+    TemplateAsset {
+      Id: 5476186188111447366
+    }
+  }
+}
+Objects {
+  Id: 14054138153780161262
+  Name: "LeagueInfo"
+  Transform {
+    Location {
+      X: -1220
+      Y: 460
+    }
+    Rotation {
+      Yaw: 19.9999943
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 15636251591686938926
+  TemplateInstance {
+    ParameterOverrideMap {
+      key: 13107605162802794036
+      value {
+        Overrides {
+          Name: "Name"
+          String: "LeagueInfo"
+        }
+        Overrides {
+          Name: "Position"
+          Vector {
+            X: -1280
+            Y: -900
+          }
+        }
+        Overrides {
+          Name: "Rotation"
+          Rotator {
+            Yaw: 120.000008
+          }
+        }
+        Overrides {
+          Name: "Scale"
+          Vector {
+            X: 1
+            Y: 1
+            Z: 1
+          }
+        }
+      }
+    }
+    TemplateAsset {
+      Id: 804130985179010830
+    }
+  }
+}
+Objects {
+  Id: 9733146858676719161
+  Name: "RPS_MatchStage"
+  Transform {
+    Location {
+      X: -1470
+      Y: 1500
+      Z: 190
+    }
+    Rotation {
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 15636251591686938926
+  WantsNetworking: true
+  Collidable_v2 {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  Visible_v2 {
+    Value: "mc:evisibilitysetting:inheritfromparent"
+  }
+  TemplateInstance {
+    ParameterOverrideMap {
+      key: 8456419368000778161
+      value {
+        Overrides {
+          Name: "Name"
+          String: "RPS_MatchStage"
+        }
+        Overrides {
+          Name: "Position"
+          Vector {
+            X: -2260.7876
+            Y: -1326.79639
+            Z: 190
+          }
+        }
+        Overrides {
+          Name: "Rotation"
+          Rotator {
+            Yaw: 100.000008
+          }
+        }
+        Overrides {
+          Name: "Scale"
+          Vector {
+            X: 1
+            Y: 1
+            Z: 1
+          }
+        }
+      }
+    }
+    TemplateAsset {
+      Id: 5476186188111447366
+    }
   }
 }
 Objects {
@@ -59,7 +454,7 @@ Objects {
       Z: 1
     }
   }
-  ParentId: 4781671109827199097
+  ParentId: 15636251591686938926
   WantsNetworking: true
   Collidable_v2 {
     Value: "mc:ecollisionsetting:inheritfromparent"
@@ -78,8 +473,8 @@ Objects {
         Overrides {
           Name: "Position"
           Vector {
-            X: -1470
-            Y: 1500
+            X: -990
+            Y: 1920
             Z: 190
           }
         }
@@ -104,6 +499,60 @@ Objects {
   }
 }
 Objects {
+  Id: 720725326799022247
+  Name: "LeagueInfo"
+  Transform {
+    Location {
+      X: 640
+      Y: 740
+    }
+    Rotation {
+      Yaw: -95
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 15636251591686938926
+  TemplateInstance {
+    ParameterOverrideMap {
+      key: 13107605162802794036
+      value {
+        Overrides {
+          Name: "Name"
+          String: "LeagueInfo"
+        }
+        Overrides {
+          Name: "Position"
+          Vector {
+            X: -740
+            Y: 880
+          }
+        }
+        Overrides {
+          Name: "Rotation"
+          Rotator {
+            Yaw: 19.9999943
+          }
+        }
+        Overrides {
+          Name: "Scale"
+          Vector {
+            X: 1
+            Y: 1
+            Z: 1
+          }
+        }
+      }
+    }
+    TemplateAsset {
+      Id: 804130985179010830
+    }
+  }
+}
+Objects {
   Id: 12877116572563031164
   Name: "RPS_MatchStage"
   Transform {
@@ -113,7 +562,7 @@ Objects {
       Z: 1
     }
   }
-  ParentId: 4781671109827199097
+  ParentId: 15636251591686938926
   WantsNetworking: true
   Collidable_v2 {
     Value: "mc:ecollisionsetting:inheritfromparent"
@@ -132,14 +581,22 @@ Objects {
         Overrides {
           Name: "Position"
           Vector {
-            X: 1310
-            Y: 1830
+            X: 1790
+            Y: 2250
             Z: 190
           }
         }
         Overrides {
           Name: "Rotation"
           Rotator {
+          }
+        }
+        Overrides {
+          Name: "Scale"
+          Vector {
+            X: 1
+            Y: 1
+            Z: 1
           }
         }
       }
@@ -150,14 +607,62 @@ Objects {
   }
 }
 Objects {
+  Id: 3007624496625844230
+  Name: "LeagueInfo"
+  Transform {
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 15636251591686938926
+  TemplateInstance {
+    ParameterOverrideMap {
+      key: 13107605162802794036
+      value {
+        Overrides {
+          Name: "Name"
+          String: "LeagueInfo"
+        }
+        Overrides {
+          Name: "Position"
+          Vector {
+            X: 1460
+            Y: 1090
+          }
+        }
+        Overrides {
+          Name: "Rotation"
+          Rotator {
+            Yaw: -35.0000038
+          }
+        }
+        Overrides {
+          Name: "Scale"
+          Vector {
+            X: 1
+            Y: 1
+            Z: 1
+          }
+        }
+      }
+    }
+    TemplateAsset {
+      Id: 804130985179010830
+    }
+  }
+}
+Objects {
   Id: 15992148758007955753
   Name: "Debug Consoles"
   Transform {
     Location {
-      X: 100
-      Y: -130
+      X: 2510
+      Y: -1840
     }
     Rotation {
+      Yaw: 50
     }
     Scale {
       X: 1
@@ -168,7 +673,6 @@ Objects {
   ParentId: 4781671109827199097
   ChildIds: 3368631117492602130
   ChildIds: 13197488899972910098
-  ChildIds: 6634222322559288474
   ChildIds: 1951666887121622172
   ChildIds: 3377033661202221464
   ChildIds: 2814351343942830562
@@ -904,252 +1408,6 @@ Objects {
   }
 }
 Objects {
-  Id: 6634222322559288474
-  Name: "SignupButton"
-  Transform {
-    Location {
-      X: 140
-      Y: -90
-    }
-    Rotation {
-    }
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 15992148758007955753
-  ChildIds: 10508130600984979580
-  ChildIds: 14878309573139797815
-  ChildIds: 4662124011897174524
-  ChildIds: 16964906391169247270
-  Collidable_v2 {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
-  }
-  CameraCollidable {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  EditorIndicatorVisibility {
-    Value: "mc:eindicatorvisibility:visiblewhenselected"
-  }
-  Folder {
-    IsGroup: true
-  }
-  NetworkRelevanceDistance {
-    Value: "mc:eproxyrelevance:critical"
-  }
-}
-Objects {
-  Id: 16964906391169247270
-  Name: "Trigger"
-  Transform {
-    Location {
-      Y: 80
-      Z: 90
-    }
-    Rotation {
-    }
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 6634222322559288474
-  Collidable_v2 {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
-  }
-  CameraCollidable {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  EditorIndicatorVisibility {
-    Value: "mc:eindicatorvisibility:visiblewhenselected"
-  }
-  Trigger {
-    Interactable: true
-    InteractionLabel: "Sign  up"
-    TeamSettings {
-      IsTeamCollisionEnabled: true
-      IsEnemyCollisionEnabled: true
-    }
-    TriggerShape_v2 {
-      Value: "mc:etriggershape:box"
-    }
-  }
-  NetworkRelevanceDistance {
-    Value: "mc:eproxyrelevance:critical"
-  }
-}
-Objects {
-  Id: 4662124011897174524
-  Name: "EventTrigger"
-  Transform {
-    Location {
-      X: -300
-    }
-    Rotation {
-    }
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 6634222322559288474
-  UnregisteredParameters {
-    Overrides {
-      Name: "cs:Trigger"
-      ObjectReference {
-        SelfId: 16964906391169247270
-      }
-    }
-    Overrides {
-      Name: "cs:EventToFire"
-      String: "RPS_Signup"
-    }
-  }
-  Collidable_v2 {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
-  }
-  CameraCollidable {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  EditorIndicatorVisibility {
-    Value: "mc:eindicatorvisibility:visiblewhenselected"
-  }
-  Script {
-    ScriptAsset {
-      Id: 14632120143330899897
-    }
-  }
-  NetworkRelevanceDistance {
-    Value: "mc:eproxyrelevance:critical"
-  }
-}
-Objects {
-  Id: 14878309573139797815
-  Name: "Computer Monitor 01"
-  Transform {
-    Location {
-      Z: 100
-    }
-    Rotation {
-      Roll: -30.0000057
-    }
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 6634222322559288474
-  UnregisteredParameters {
-    Overrides {
-      Name: "ma:Prop_Screen:id"
-      AssetReference {
-        Id: 18245548439417962854
-      }
-    }
-    Overrides {
-      Name: "ma:Prop_Screen:color"
-      Color {
-        R: 0.193377316
-        G: 1
-        B: 0.13
-        A: 1
-      }
-    }
-  }
-  Collidable_v2 {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
-  }
-  CameraCollidable {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  EditorIndicatorVisibility {
-    Value: "mc:eindicatorvisibility:visiblewhenselected"
-  }
-  CoreMesh {
-    MeshAsset {
-      Id: 17868938976493134165
-    }
-    Teams {
-      IsTeamCollisionEnabled: true
-      IsEnemyCollisionEnabled: true
-    }
-    StaticMesh {
-      Physics {
-        Mass: 100
-        LinearDamping: 0.01
-      }
-      BoundsScale: 1
-    }
-  }
-  NetworkRelevanceDistance {
-    Value: "mc:eproxyrelevance:critical"
-  }
-}
-Objects {
-  Id: 10508130600984979580
-  Name: "Computer Stand"
-  Transform {
-    Location {
-    }
-    Rotation {
-    }
-    Scale {
-      X: 1
-      Y: 1
-      Z: 3
-    }
-  }
-  ParentId: 6634222322559288474
-  Collidable_v2 {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
-  }
-  CameraCollidable {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  EditorIndicatorVisibility {
-    Value: "mc:eindicatorvisibility:visiblewhenselected"
-  }
-  CoreMesh {
-    MeshAsset {
-      Id: 4842469541296708668
-    }
-    Teams {
-      IsTeamCollisionEnabled: true
-      IsEnemyCollisionEnabled: true
-    }
-    StaticMesh {
-      Physics {
-        Mass: 100
-        LinearDamping: 0.01
-      }
-      BoundsScale: 1
-    }
-  }
-  NetworkRelevanceDistance {
-    Value: "mc:eproxyrelevance:critical"
-  }
-}
-Objects {
   Id: 13197488899972910098
   Name: "ResetKey Button"
   Transform {
@@ -1639,15 +1897,14 @@ Objects {
   }
 }
 Objects {
-  Id: 16051411215998710975
-  Name: "LeagueInfo"
+  Id: 6634222322559288474
+  Name: "SignupButton"
   Transform {
     Location {
-      X: -390
-      Y: 230
+      X: -20
+      Y: -780
     }
     Rotation {
-      Yaw: -95
     }
     Scale {
       X: 1
@@ -1656,10 +1913,10 @@ Objects {
     }
   }
   ParentId: 4781671109827199097
-  ChildIds: 18194505744642905226
-  ChildIds: 2232355742078291184
-  ChildIds: 2712215000855001906
-  ChildIds: 14655081732692733510
+  ChildIds: 10508130600984979580
+  ChildIds: 14878309573139797815
+  ChildIds: 4662124011897174524
+  ChildIds: 16964906391169247270
   Collidable_v2 {
     Value: "mc:ecollisionsetting:inheritfromparent"
   }
@@ -1680,12 +1937,12 @@ Objects {
   }
 }
 Objects {
-  Id: 14655081732692733510
-  Name: "League UI ClientContext"
+  Id: 16964906391169247270
+  Name: "Trigger"
   Transform {
     Location {
-      X: 300
-      Y: -1000
+      Y: 80
+      Z: 90
     }
     Rotation {
     }
@@ -1695,32 +1952,40 @@ Objects {
       Z: 1
     }
   }
-  ParentId: 16051411215998710975
-  ChildIds: 9701846409773880599
-  ChildIds: 5250879900530029602
+  ParentId: 6634222322559288474
   Collidable_v2 {
-    Value: "mc:ecollisionsetting:forceoff"
+    Value: "mc:ecollisionsetting:inheritfromparent"
   }
   Visible_v2 {
     Value: "mc:evisibilitysetting:inheritfromparent"
   }
   CameraCollidable {
-    Value: "mc:ecollisionsetting:forceoff"
+    Value: "mc:ecollisionsetting:inheritfromparent"
   }
   EditorIndicatorVisibility {
     Value: "mc:eindicatorvisibility:visiblewhenselected"
   }
-  NetworkContext {
+  Trigger {
+    Interactable: true
+    InteractionLabel: "Sign  up"
+    TeamSettings {
+      IsTeamCollisionEnabled: true
+      IsEnemyCollisionEnabled: true
+    }
+    TriggerShape_v2 {
+      Value: "mc:etriggershape:box"
+    }
   }
   NetworkRelevanceDistance {
     Value: "mc:eproxyrelevance:critical"
   }
 }
 Objects {
-  Id: 5250879900530029602
-  Name: "UI Container"
+  Id: 4662124011897174524
+  Name: "EventTrigger"
   Transform {
     Location {
+      X: -300
     }
     Rotation {
     }
@@ -1730,427 +1995,17 @@ Objects {
       Z: 1
     }
   }
-  ParentId: 14655081732692733510
-  ChildIds: 16307954532982737861
-  Collidable_v2 {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  Visible_v2 {
-    Value: "mc:evisibilitysetting:forceoff"
-  }
-  CameraCollidable {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  EditorIndicatorVisibility {
-    Value: "mc:eindicatorvisibility:visiblewhenselected"
-  }
-  Control {
-    RenderTransformPivot {
-      Anchor {
-        Value: "mc:euianchor:middlecenter"
-      }
-    }
-    Canvas {
-      ContentType {
-        Value: "mc:ecanvascontenttype:dynamic"
-      }
-      Opacity: 1
-      IsHUD: true
-      CanvasWorldSize {
-        X: 1024
-        Y: 1024
-      }
-      RedrawTime: 30
-    }
-    AnchorLayout {
-      SelfAnchor {
-        Anchor {
-          Value: "mc:euianchor:topleft"
-        }
-      }
-      TargetAnchor {
-        Anchor {
-          Value: "mc:euianchor:topleft"
-        }
-      }
-    }
-  }
-}
-Objects {
-  Id: 16307954532982737861
-  Name: "UI Panel"
-  Transform {
-    Location {
-    }
-    Rotation {
-    }
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 5250879900530029602
-  ChildIds: 9739662921996538585
-  ChildIds: 2292288657336878084
-  ChildIds: 17981743609009004892
-  ChildIds: 9289008206822100845
-  Collidable_v2 {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
-  }
-  CameraCollidable {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  EditorIndicatorVisibility {
-    Value: "mc:eindicatorvisibility:visiblewhenselected"
-  }
-  Control {
-    Width: 1310
-    Height: 660
-    RenderTransformPivot {
-      Anchor {
-        Value: "mc:euianchor:middlecenter"
-      }
-    }
-    Panel {
-      Opacity: 1
-    }
-    AnchorLayout {
-      SelfAnchor {
-        Anchor {
-          Value: "mc:euianchor:middlecenter"
-        }
-      }
-      TargetAnchor {
-        Anchor {
-          Value: "mc:euianchor:middlecenter"
-        }
-      }
-    }
-  }
-}
-Objects {
-  Id: 9289008206822100845
-  Name: "StateText"
-  Transform {
-    Location {
-      X: -104.865845
-      Y: 1408.56152
-    }
-    Rotation {
-      Yaw: 95
-    }
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 16307954532982737861
-  Collidable_v2 {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
-  }
-  CameraCollidable {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  EditorIndicatorVisibility {
-    Value: "mc:eindicatorvisibility:visiblewhenselected"
-  }
-  Control {
-    Width: 670
-    Height: 120
-    UIX: -30
-    UIY: -300
-    RenderTransformPivot {
-      Anchor {
-        Value: "mc:euianchor:middlecenter"
-      }
-    }
-    Text {
-      Label: "League open!\r\nSign ends in 12:34:56!"
-      Color {
-        R: 1
-        G: 1
-        B: 1
-        A: 1
-      }
-      Size: 30
-      Justification {
-        Value: "mc:etextjustify:right"
-      }
-      AutoWrapText: true
-      Font {
-        Id: 17024653868256328926
-      }
-      VerticalJustification {
-        Value: "mc:everticaljustification:top"
-      }
-      ShadowColor {
-        A: 1
-      }
-      ShadowOffset {
-      }
-      OutlineColor {
-        A: 1
-      }
-    }
-    AnchorLayout {
-      SelfAnchor {
-        Anchor {
-          Value: "mc:euianchor:topright"
-        }
-      }
-      TargetAnchor {
-        Anchor {
-          Value: "mc:euianchor:middleright"
-        }
-      }
-    }
-  }
-}
-Objects {
-  Id: 17981743609009004892
-  Name: "TextPanel"
-  Transform {
-    Location {
-    }
-    Rotation {
-    }
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 16307954532982737861
-  Collidable_v2 {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
-  }
-  CameraCollidable {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  EditorIndicatorVisibility {
-    Value: "mc:eindicatorvisibility:visiblewhenselected"
-  }
-  Control {
-    Width: 690
-    Height: 600
-    UIX: 40
-    RenderTransformPivot {
-      Anchor {
-        Value: "mc:euianchor:middlecenter"
-      }
-    }
-    Panel {
-      Opacity: 1
-    }
-    AnchorLayout {
-      SelfAnchor {
-        Anchor {
-          Value: "mc:euianchor:middleleft"
-        }
-      }
-      TargetAnchor {
-        Anchor {
-          Value: "mc:euianchor:middleleft"
-        }
-      }
-    }
-  }
-}
-Objects {
-  Id: 2292288657336878084
-  Name: "UI Image"
-  Transform {
-    Location {
-    }
-    Rotation {
-    }
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 16307954532982737861
-  Collidable_v2 {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
-  }
-  CameraCollidable {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  EditorIndicatorVisibility {
-    Value: "mc:eindicatorvisibility:visiblewhenselected"
-  }
-  Control {
-    Width: 200
-    Height: 200
-    RenderTransformPivot {
-      Anchor {
-        Value: "mc:euianchor:middlecenter"
-      }
-    }
-    UseParentWidth: true
-    UseParentHeight: true
-    Image {
-      Brush {
-        Id: 9384556241076679606
-      }
-      Color {
-        R: 1
-        G: 1
-        B: 1
-        A: 1
-      }
-      TeamSettings {
-      }
-      ShadowColor {
-        A: 1
-      }
-      ShadowOffset {
-      }
-      ScreenshotIndex: 1
-    }
-    AnchorLayout {
-      SelfAnchor {
-        Anchor {
-          Value: "mc:euianchor:topleft"
-        }
-      }
-      TargetAnchor {
-        Anchor {
-          Value: "mc:euianchor:topleft"
-        }
-      }
-    }
-  }
-}
-Objects {
-  Id: 9739662921996538585
-  Name: "UI Image"
-  Transform {
-    Location {
-    }
-    Rotation {
-    }
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 16307954532982737861
-  Collidable_v2 {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
-  }
-  CameraCollidable {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  EditorIndicatorVisibility {
-    Value: "mc:eindicatorvisibility:visiblewhenselected"
-  }
-  Control {
-    Width: 200
-    Height: 200
-    RenderTransformPivot {
-      Anchor {
-        Value: "mc:euianchor:middlecenter"
-      }
-    }
-    UseParentWidth: true
-    UseParentHeight: true
-    Image {
-      Brush {
-        Id: 6870300947799701576
-      }
-      Color {
-        G: 0.0900000334
-        B: 0.0238410924
-        A: 1
-      }
-      TeamSettings {
-      }
-      ShadowColor {
-        A: 1
-      }
-      ShadowOffset {
-      }
-      ScreenshotIndex: 1
-    }
-    AnchorLayout {
-      SelfAnchor {
-        Anchor {
-          Value: "mc:euianchor:topleft"
-        }
-      }
-      TargetAnchor {
-        Anchor {
-          Value: "mc:euianchor:topleft"
-        }
-      }
-    }
-  }
-}
-Objects {
-  Id: 9701846409773880599
-  Name: "LeagueDisplay"
-  Transform {
-    Location {
-    }
-    Rotation {
-    }
-    Scale {
-      X: 1
-      Y: 1
-      Z: 1
-    }
-  }
-  ParentId: 14655081732692733510
+  ParentId: 6634222322559288474
   UnregisteredParameters {
-    Overrides {
-      Name: "cs:TextPanel"
-      ObjectReference {
-        SelfId: 17981743609009004892
-      }
-    }
-    Overrides {
-      Name: "cs:_RichTextMgr"
-      AssetReference {
-        Id: 725370609427820033
-      }
-    }
-    Overrides {
-      Name: "cs:UIContainer"
-      ObjectReference {
-        SelfId: 5250879900530029602
-      }
-    }
     Overrides {
       Name: "cs:Trigger"
       ObjectReference {
-        SelfId: 2712215000855001906
+        SelfId: 16964906391169247270
       }
     }
     Overrides {
-      Name: "cs:StateText"
-      ObjectReference {
-        SelfId: 9289008206822100845
-      }
+      Name: "cs:EventToFire"
+      String: "RPS_Signup"
     }
   }
   Collidable_v2 {
@@ -2167,7 +2022,7 @@ Objects {
   }
   Script {
     ScriptAsset {
-      Id: 5827031838154532929
+      Id: 14632120143330899897
     }
   }
   NetworkRelevanceDistance {
@@ -2175,49 +2030,7 @@ Objects {
   }
 }
 Objects {
-  Id: 2712215000855001906
-  Name: "Trigger"
-  Transform {
-    Location {
-      Y: 80
-      Z: 90
-    }
-    Rotation {
-    }
-    Scale {
-      X: 2.5
-      Y: 2.5
-      Z: 2.5
-    }
-  }
-  ParentId: 16051411215998710975
-  Collidable_v2 {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
-  }
-  CameraCollidable {
-    Value: "mc:ecollisionsetting:inheritfromparent"
-  }
-  EditorIndicatorVisibility {
-    Value: "mc:eindicatorvisibility:visiblewhenselected"
-  }
-  Trigger {
-    TeamSettings {
-      IsTeamCollisionEnabled: true
-      IsEnemyCollisionEnabled: true
-    }
-    TriggerShape_v2 {
-      Value: "mc:etriggershape:box"
-    }
-  }
-  NetworkRelevanceDistance {
-    Value: "mc:eproxyrelevance:critical"
-  }
-}
-Objects {
-  Id: 2232355742078291184
+  Id: 14878309573139797815
   Name: "Computer Monitor 01"
   Transform {
     Location {
@@ -2232,7 +2045,7 @@ Objects {
       Z: 1
     }
   }
-  ParentId: 16051411215998710975
+  ParentId: 6634222322559288474
   UnregisteredParameters {
     Overrides {
       Name: "ma:Prop_Screen:id"
@@ -2283,7 +2096,7 @@ Objects {
   }
 }
 Objects {
-  Id: 18194505744642905226
+  Id: 10508130600984979580
   Name: "Computer Stand"
   Transform {
     Location {
@@ -2296,7 +2109,7 @@ Objects {
       Z: 3
     }
   }
-  ParentId: 16051411215998710975
+  ParentId: 6634222322559288474
   Collidable_v2 {
     Value: "mc:ecollisionsetting:inheritfromparent"
   }
@@ -4082,8 +3895,8 @@ Objects {
     Rotation {
     }
     Scale {
-      X: 50
-      Y: 98.9999924
+      X: 96.9999619
+      Y: 99.0000076
       Z: 1
     }
   }
@@ -4520,6 +4333,41 @@ Objects {
       Id: 841534158063459245
     }
     ShouldDecrowdPlayers: true
+  }
+  NetworkRelevanceDistance {
+    Value: "mc:eproxyrelevance:critical"
+  }
+}
+Objects {
+  Id: 14042633618792588925
+  Name: "CC Stuff"
+  Transform {
+    Location {
+    }
+    Rotation {
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 4781671109827199097
+  Collidable_v2 {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  Visible_v2 {
+    Value: "mc:evisibilitysetting:inheritfromparent"
+  }
+  CameraCollidable {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  EditorIndicatorVisibility {
+    Value: "mc:eindicatorvisibility:visiblewhenselected"
+  }
+  Folder {
+    IsFilePartition: true
+    FilePartitionName: "CC Stuff"
   }
   NetworkRelevanceDistance {
     Value: "mc:eproxyrelevance:critical"

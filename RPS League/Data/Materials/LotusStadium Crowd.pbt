@@ -2,7 +2,7 @@ Assets {
   Id: 2020505116162992632
   Name: "LotusStadium Crowd"
   PlatformAssetType: 13
-  SerializationVersion: 103
+  SerializationVersion: 104
   CustomMaterialAsset {
     BaseMaterialId: 13431787113548457354
     ParameterOverrides {

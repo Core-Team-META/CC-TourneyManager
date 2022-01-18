@@ -98,12 +98,21 @@ function DisplayLeagueStatus()
         end
       end
 
-      text = "<color green>Players left to play this league:</color>\n"
+      text = "<color green>Players left to play this league:\n</color><panel 600>"
       for k,v in pairs(playersToPlay) do
         print(v, ":", seenPlayers[v], MatchColors[seenPlayers[v]])
         text = text .. string.format("\n<color %s>%s</color>",
             MatchColors[seenPlayers[v]], v)
+        if seenPlayers[v] == MatchResult.PLAYER_WON then
+          text = text .. " (win)"
+        elseif seenPlayers[v] == MatchResult.PLAYER_LOST then
+          text = text .. " (loss)"
+        end
+
       end
+      text = text .. "</panel>"
+      text = text .. string.format("<panel -1><size 30>\nRank: %d\nScore: %d</panel>", data.rank, data.score)
+
     else
       text = "<color yellow>A league is in progress, but you did not sign up!</color>"
     end
@@ -137,7 +146,7 @@ function DisplayLeagueStatus()
   for k,v in pairs(TEXT_PANEL:GetChildren()) do
     v:Destroy()
   end
-  rtm.DisplayText(TEXT_PANEL, text, {leftMargin = 20, topMargin = 20, rightMargin = 20, size=30})
+  rtm.DisplayText(TEXT_PANEL, text, {leftMargin = 20, topMargin = 20, rightMargin = 20, size=25})
 end
 
 function OnOverlap(trigger, other)

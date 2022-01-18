@@ -27,9 +27,16 @@ end
 function OnPlayerSignup(player)
   print("Signup:", player.name)
 
-  lm.PlayerSignup(player.id, player.name)
+  local signupResult = lm.PlayerSignup(player.id, player.name)
 
---[[
+  if signupResult == 0 then
+    Events.BroadcastToPlayer(player, "RPS_PMP", "SIGN")
+  elseif signupResult == 1 then
+    Events.BroadcastToPlayer(player, "RPS_PMP", "ASIGN")
+  elseif signupResult == 2 then
+    Events.BroadcastToPlayer(player, "RPS_PMP", "INPROG")
+  end
+  --[[
   lm.PlayerSignup("TP1", "Test_Player_1")
   lm.PlayerSignup("TP2", "Test_Player_2")
   lm.PlayerSignup("TP3", "Test_Player_3")
@@ -58,10 +65,10 @@ function OnDebugReportMatches()
 end
 
 function OnMatchResult(winner, loser)
-  print("!!!!!!!!!!!!!!!!!!!!")
-  print("Match complete!")
-  print("winner:", winner)
-  print("loser:", loser)
+  -- print("!!!!!!!!!!!!!!!!!!!!")
+  -- print("Match complete!")
+  -- print("winner:", winner)
+  -- print("loser:", loser)
   lm.ReportMatchResult({[winner] = 2, [loser] = 1})
 end
 

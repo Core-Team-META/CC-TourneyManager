@@ -352,6 +352,7 @@ Objects {
         Value: "mc:eplayerstoragemode:disabled"
       }
       EnableConcurrentCreatorStorage: true
+      EnableNetworkedEventsQueuing: true
     }
   }
   NetworkRelevanceDistance {
