@@ -157,12 +157,11 @@ end
 
 
 function Tick()
-  local data = player:GetPrivateNetworkedData("LG_PlayerData")
-  if data ~= nil and data.stateEndTime ~= nil then
-    local timeRemaining = data.stateEndTime - os.time()
-    local timeRemainingText = PrettyTime(timeRemaining)
-    STATE_TEXT.text = string.format(LeagueStateText[data.state], timeRemainingText)
-  end
+  local data = player:GetPrivateNetworkedData("LG_PlayerData") or {}
+  local timeRemaining = (data.stateEndTime or -1) - os.time()
+  local timeRemainingText = PrettyTime(timeRemaining)
+  print("data.state = ", data.state)
+  STATE_TEXT.text = string.format(LeagueStateText[data.state or LeagueState.CLOSED], timeRemainingText)
   Task.Wait(1)
 end
 
