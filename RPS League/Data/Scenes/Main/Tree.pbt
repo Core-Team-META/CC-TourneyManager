@@ -24,6 +24,7 @@ Objects {
   ChildIds: 16051411215998710975
   ChildIds: 15992148758007955753
   ChildIds: 12877116572563031164
+  ChildIds: 14733931724943505943
   UnregisteredParameters {
   }
   Collidable_v2 {
@@ -42,6 +43,67 @@ Objects {
   }
 }
 Objects {
+  Id: 14733931724943505943
+  Name: "RPS_MatchStage"
+  Transform {
+    Location {
+      X: 1310
+      Y: 1830
+      Z: 190
+    }
+    Rotation {
+    }
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 4781671109827199097
+  WantsNetworking: true
+  Collidable_v2 {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  Visible_v2 {
+    Value: "mc:evisibilitysetting:inheritfromparent"
+  }
+  TemplateInstance {
+    ParameterOverrideMap {
+      key: 8456419368000778161
+      value {
+        Overrides {
+          Name: "Name"
+          String: "RPS_MatchStage"
+        }
+        Overrides {
+          Name: "Position"
+          Vector {
+            X: -1470
+            Y: 1500
+            Z: 190
+          }
+        }
+        Overrides {
+          Name: "Rotation"
+          Rotator {
+          }
+        }
+        Overrides {
+          Name: "Scale"
+          Vector {
+            X: 1
+            Y: 1
+            Z: 1
+          }
+        }
+      }
+    }
+    TemplateAsset {
+      Id: 5476186188111447366
+    }
+  }
+}
+Objects {
   Id: 12877116572563031164
   Name: "RPS_MatchStage"
   Transform {
@@ -53,6 +115,12 @@ Objects {
   }
   ParentId: 4781671109827199097
   WantsNetworking: true
+  Collidable_v2 {
+    Value: "mc:ecollisionsetting:inheritfromparent"
+  }
+  Visible_v2 {
+    Value: "mc:evisibilitysetting:inheritfromparent"
+  }
   TemplateInstance {
     ParameterOverrideMap {
       key: 8456419368000778161
@@ -69,15 +137,9 @@ Objects {
             Z: 190
           }
         }
-      }
-    }
-    ParameterOverrideMap {
-      key: 12942976621477046322
-      value {
         Overrides {
-          Name: "Visible"
-          Enum {
-            Value: "mc:evisibilitysetting:forceoff"
+          Name: "Rotation"
+          Rotator {
           }
         }
       }
@@ -4021,7 +4083,7 @@ Objects {
     }
     Scale {
       X: 50
-      Y: 50
+      Y: 98.9999924
       Z: 1
     }
   }

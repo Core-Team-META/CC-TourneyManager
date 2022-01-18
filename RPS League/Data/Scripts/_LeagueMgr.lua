@@ -308,7 +308,7 @@ end
 
 
 
-function API.ReportMatchResult(matchId, scoreTable)
+function API.ReportMatchResult(scoreTable)
   -- Generate a sorted table of players/scores
   local matchRankings = {}
   for pid,score in pairs(scoreTable) do 
@@ -329,9 +329,11 @@ function API.ReportMatchResult(matchId, scoreTable)
     local leagueData = data.leagueData
     for rank, result in pairs(matchRankings) do
       local playerEntry = GetPlayerEntry(leagueData, result.pid)
-      if playerEntry ~= nil then
+      if playerEntry ~= nil then  -- playerEntry might be nil if they are not in the tourney
         for rank2, result2 in pairs(matchRankings) do
-          if playerEntry.matchData[result2.pid] == -1 then -- only take first submitted score!
+          -- only take first submitted score!
+          -- this might also be nil, if their opponent is not in the tourney.
+          if playerEntry.matchData[result2.pid] == -1 then
             playerEntry.matchData[result2.pid] = result2.rank
             UpdatePlayerScore(leagueData, result2.pid)
           end
@@ -504,7 +506,7 @@ function API.DebugReportRandomScores(scoresToReport)
     print("Submitting score table")
     cu.DisplayTable(scoreTable)
 
-    API.ReportMatchResult(leagueData, scoreTable)
+    API.ReportMatchResult(scoreTable)
   end
 end
 

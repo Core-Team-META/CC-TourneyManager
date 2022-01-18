@@ -10,6 +10,8 @@ local propRPS_WorldIcon_Rock = script:GetCustomProperty("RPS_WorldIcon_Rock")
 local propRPS_WorldIcon_Paper = script:GetCustomProperty("RPS_WorldIcon_Paper")
 local propRPS_WorldIcon_Scissors = script:GetCustomProperty("RPS_WorldIcon_Scissors")
 local propRPS_LoserExplosion = script:GetCustomProperty("RPS_LoserExplosion")
+local TRIGGER = script:GetCustomProperty("Trigger"):WaitForObject() ---@type Trigger
+local RESPAWN_POINT = script:GetCustomProperty("RespawnPoint"):WaitForObject() ---@type StaticMesh
 
 
 local slotList = { propPlayerSpot1, propPlayerSpot2 }
@@ -24,6 +26,30 @@ local STATE_DISPLAYING_OUTCOME = "displaying outcome"
 
 local currentMatchState = STATE_GAME_NOT_STARTED
 local selectionsReceived = 0
+
+
+function GetPlayersInTrigger()
+  local result = {}
+  for k,v in pairs(Game.GetPlayers()) do
+    if TRIGGER:IsOverlapping(v) then
+      table.insert(result, v)
+    end
+  end
+  return result
+end
+
+
+function OnBeginOverlap(trigger, other)
+  if other:IsA("Player") and currentMatchState == STATE_GAME_NOT_STARTED then
+    local playersInZone = GetPlayersInTrigger()
+    print("There are currently", #playersInZone, "players in the trigger")
+    if #playersInZone >= 2 then
+      StartMatch(playersInZone[1].id, playersInZone[2].id)
+    end
+  end
+end
+
+
 
 function StartMatch(p1, p2)
   selectionsReceived = 0
@@ -91,7 +117,6 @@ function DisplayMatchResults()
 
   Task.Wait(3)
   if not isDraw then
-    currentMatchState = STATE_GAME_NOT_STARTED
     Task.Wait(1)
     World.SpawnAsset(propRPS_LoserExplosion, {position = loser.player:GetWorldPosition()})
     DisconnectPlayer(plist[1].player)
@@ -103,9 +128,13 @@ function DisplayMatchResults()
     loser.player:Spawn()
     -- This should be last for reasons.
     -- (mostly because when we broadcast these, it will destroy this)
-    Events.Broadcast("RPS_Result", winner.pid, 1)
-    Events.Broadcast("RPS_Result", loser.pid, 0)
+    --Events.Broadcast("RPS_Result", winner.pid, 1)
+    --Events.Broadcast("RPS_Result", loser.pid, 0)
+    Events.Broadcast("RPS_Result", winner.pid, loser.pid)
     print("Winner:", winner.player.name)
+    plist[1].player:SetWorldPosition(RESPAWN_POINT:GetWorldPosition())
+    plist[2].player:SetWorldPosition(RESPAWN_POINT:GetWorldPosition())
+    currentMatchState = STATE_GAME_NOT_STARTED
   else
     print("It was a draw!")
     Task.Wait(2)
@@ -162,12 +191,12 @@ function OnPlayerLeft(p)
 end
 
 
-Events.Connect("RPS_start_" .. propRoot:GetReference().id, StartMatch)
+--Events.Connect("RPS_start_" .. propRoot:GetReference().id, StartMatch)
 Events.ConnectForPlayer("RPS_C", SelectionMade)
 print("RPS_start_" .. propRoot:GetReference().id)
 Game.playerLeftEvent:Connect(OnPlayerLeft)
 
-
+TRIGGER.beginOverlapEvent:Connect(OnBeginOverlap)
 -----
 
 

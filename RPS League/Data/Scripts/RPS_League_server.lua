@@ -29,12 +29,14 @@ function OnPlayerSignup(player)
 
   lm.PlayerSignup(player.id, player.name)
 
+--[[
   lm.PlayerSignup("TP1", "Test_Player_1")
   lm.PlayerSignup("TP2", "Test_Player_2")
   lm.PlayerSignup("TP3", "Test_Player_3")
   lm.PlayerSignup("TP4", "Test_Player_4")
   lm.PlayerSignup("TP5", "Test_Player_5")
   lm.PlayerSignup("TP6", "Test_Player_6")
+  ]]
 end
 
 
@@ -55,7 +57,13 @@ function OnDebugReportMatches()
   lm.DebugReportRandomScores(10)
 end
 
-
+function OnMatchResult(winner, loser)
+  print("!!!!!!!!!!!!!!!!!!!!")
+  print("Match complete!")
+  print("winner:", winner)
+  print("loser:", loser)
+  lm.ReportMatchResult({[winner] = 2, [loser] = 1})
+end
 
 
 Initialize()
@@ -66,3 +74,6 @@ Events.Connect("RPS_Signup", OnPlayerSignup)
 Events.Connect("RPS_DebugOut", OnDebugOut)
 Events.Connect("RPS_DebugAdvance", OnDebugAdvance)
 Events.Connect("RPS_DebugReportMatches", OnDebugReportMatches)
+Events.Connect("RPS_Result", OnMatchResult)
+
+

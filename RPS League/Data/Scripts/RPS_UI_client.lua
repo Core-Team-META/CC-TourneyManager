@@ -24,7 +24,7 @@ local player = Game.GetLocalPlayer()
 local BASE_ICONLABEL_SIZE = 70
 local ICONLABEL_VARIANCE = 20
 
-local CHOICE_TIME = 30 -- 5 in seconds
+local CHOICE_TIME = 10 -- in seconds
 
 local currentSelection = 1
 
