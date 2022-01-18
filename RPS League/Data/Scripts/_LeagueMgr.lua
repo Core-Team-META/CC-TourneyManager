@@ -125,7 +125,7 @@ function OnConcurrentDataChanged(netref, data)
     UpdateAllClientData()
     return
   end
-  if leagueData.state == currentLeagueState then return end
+  --if leagueData.state == currentLeagueState then return end
 
   -- new state!
   if leagueData.state == LeagueState.OPEN_FOR_ENTRY then
@@ -174,24 +174,7 @@ function GetPlayerEntry(leagueData, pid)
 end
 
 
---[[
-function API.GetMatchesForPlayer(leagueData, pid)
-  print("Finding matches for player ", pid, #leagueData.matchData)
-  results = {}
-  for k, match in pairs(leagueData.matchData) do
-    --cu.DisplayTable(match)
-    for kk, id in pairs(match.playerIds) do
-      --print(id, pid)
-      if id == pid then
-        table.insert(results, match)
-        break
-      end
-    end
-  end
-  print("Results:" , #results)
-  return results
-end
-]]
+
 
 function API.StartLeague(forceRestart)
   local leagueData = GetLeagueData()
@@ -223,7 +206,6 @@ end
 function GenerateNewMatches(leagueData)
   print("Generating new matches!")
 
-
   for k,entry in pairs(leagueData.playerEntries) do
     entry.matchData = {}
     for k, entry2 in pairs(leagueData.playerEntries) do
@@ -231,35 +213,7 @@ function GenerateNewMatches(leagueData)
         entry.matchData[entry2.playerId] = -1
       end
     end
-
-    print("match data-----------")
-    --cu.DisplayTable(entry.matchData)
   end
-
-
-  --[[
-  local newMatches = {}
-  print("---------GENERATING NEW MATCHES")
-  cu.DisplayTable(leagueData.playerEntries)
-
-  for i = 1, #(leagueData.playerEntries) do
-    for j = i, #(leagueData.playerEntries) do
-
-      local playersInMatch = {leagueData.playerEntries[i].playerId, leagueData.playerEntries[j].playerId}
-      local newMatch =   {
-        playerIds = playersInMatch,
-        playerScores = {}, -- Map of playerId -> score
-        matchId = #newMatches + 1,
-        round = leagueData.currentRound,
-        isComplete = false,
-      }
-
-      table.insert(newMatches, newMatch)
-    end
-  end
-  
-  return newMatches
-  ]]
 end
 
 
@@ -284,6 +238,16 @@ function UpdateClientData(p, leagueData)
     rank = playerEntry.rank
   end
 
+  local smallPlayerData = {}
+  for k,v in pairs(leagueData.playerEntries or {}) do
+    table.insert(smallPlayerData, {
+      name = v.name,
+      playerId = v.playerId,
+      rank = v.rank,
+      score = v.score})
+  end
+
+
   p:SetPrivateNetworkedData("LG_PlayerData", {
     isInLeague = isInLeague,
     matchData = matches,
@@ -291,6 +255,8 @@ function UpdateClientData(p, leagueData)
     stateEndTime = leagueData.stateEndTime,
     score = score,
     rank = rank,
+    playerEntries = smallPlayerData,
+    --playerEntries = leagueData.playerEntries,
   })
 end
 
@@ -475,48 +441,10 @@ end
 
 
 function AdvanceState_Complete(leagueData, debugResetTime)
-  -- End all outstanding matches
-  -- Calculate scores
-  --CalculateScores(leagueData)
   leagueData.stateEndTime = -1
-  --[[  
-        playerIds = playersInMatch,
-        playerScores = {}, -- Map of playerId -> score
-        round = leagueData.currentRound
-        isComplete = false,
-]]
   return leagueData
 end
 
-
---[[
-function UpdateScores(leagueData)
-  local playerMatchScores = {}
-
-
-
-
-  for k,match in pairs(leagueData.matchData) do
-
-    local ranking = {table.unpack(match.playerIds)}
-    table.sort(ranking, function(a, b)
-      -- note that we use > instead of <, to reverse the sort order.
-      -- we're going to use the index as the points awarded for the round.
-      return match.playerScores[a] > match.playerScores[b]
-    end)
-
-    for k, pid in pairs(ranking) do
-      table.insert(playerMatchScores[pid] or {}, k)
-    end
-  end
-
-  for pid, scores in pairs(playerMatchScores) do
-    table.sort(playerMatchScores[pid])
-  end
-
-
-end
-]]
 
 
 

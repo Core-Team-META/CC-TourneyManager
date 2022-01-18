@@ -72,39 +72,71 @@ function DisplayLeagueStatus()
     return
   end
 
+
+  if data.state == LeagueState.OPEN_FOR_ENTRY then
+    if data.isInLeague then
+      text = "<color green>You are registered for the league!</color>"
+    else
+      text = "<color yellow>A league is open for signups, but you are not entered yet!</color>"
+    end
+  elseif data.state == LeagueState.MATCHES then
+    if data.isInLeague then
+      -- if they are in the league, print out the matches.
+      local playersToPlay = {}
+      local seenPlayers = {}
+
+      for otherPid, score in pairs(data.matchData) do
+        table.insert(playersToPlay, otherPid)
+        if score == -1 then
+          seenPlayers[otherPid] = MatchResult.INCOMPLETE
+        elseif score == 1 then
+          seenPlayers[otherPid] = MatchResult.PLAYER_LOST
+        elseif score == 2 then
+          seenPlayers[otherPid] = MatchResult.PLAYER_WON
+        else
+          print("Weird score:", score)
+        end
+      end
+
+      text = "<color green>Players left to play this league:</color>\n"
+      for k,v in pairs(playersToPlay) do
+        print(v, ":", seenPlayers[v], MatchColors[seenPlayers[v]])
+        text = text .. string.format("\n<color %s>%s</color>",
+            MatchColors[seenPlayers[v]], v)
+      end
+    else
+      text = "<color yellow>A league is in progress, but you did not sign up!</color>"
+    end
+  elseif data.state == LeagueState.LEAGUE_COMPLETE then
+    text = "<color yellow>The league has ended!</color>\n"
+    text = text .. "Rankings:"
+
+    local rankedPlayers = {}
+    for k,v in pairs(data.playerEntries) do
+      rankedPlayers[k] = v
+    end
+    table.sort(rankedPlayers, function(a, b) return a.score > b.score end)
+    for k, v in ipairs(rankedPlayers) do
+      text = text .. string.format("\n%d: %s (%d)", k, v.name, v.score)
+    end
+    -- todo: print rankings here!
+  end
+
+
+
+
   if not data.isInLeague then
+    print("Not in a league!")
     text = "<color yellow>You are not in any leagues!</color>"
   else
-    local playersToPlay = {}
-    local seenPlayers = {}
-
-    for otherPid, score in pairs(data.matchData) do
-      table.insert(playersToPlay, otherPid)
-      if score == -1 then
-        seenPlayers[otherPid] = MatchResult.INCOMPLETE
-      elseif score == 1 then
-        seenPlayers[otherPid] = MatchResult.PLAYER_LOST
-      elseif score == 2 then
-        seenPlayers[otherPid] = MatchResult.PLAYER_WON
-      else
-        print("Weird score:", score)
-      end
-    end
-
-    text = "<color green>Players left to play this league:</color>\n"
-    for k,v in pairs(playersToPlay) do
-      print(v, ":", seenPlayers[v], MatchColors[seenPlayers[v]])
-      text = text .. string.format("\n<color %s>%s</color>",
-          MatchColors[seenPlayers[v]], v)
-    end
     print("text:")
     print(text)
 
-    for k,v in pairs(TEXT_PANEL:GetChildren()) do
-      v:Destroy()
-    end
   end
 
+  for k,v in pairs(TEXT_PANEL:GetChildren()) do
+    v:Destroy()
+  end
   rtm.DisplayText(TEXT_PANEL, text, {leftMargin = 20, topMargin = 20, rightMargin = 20, size=30})
 end
 

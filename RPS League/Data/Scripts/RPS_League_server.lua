@@ -28,16 +28,13 @@ function OnPlayerSignup(player)
   print("Signup:", player.name)
 
   lm.PlayerSignup(player.id, player.name)
-  -- make sure player is not already in entrants
-  -- Remove stuff.
 
-
-  lm.PlayerSignup("TP1", "Test Player 1")
-  lm.PlayerSignup("TP2", "Test Player 2")
-  lm.PlayerSignup("TP3", "Test Player 3")
-  lm.PlayerSignup("TP4", "Test Player 4")
-  lm.PlayerSignup("TP5", "Test Player 5")
-  lm.PlayerSignup("TP6", "Test Player 6")
+  lm.PlayerSignup("TP1", "Test_Player_1")
+  lm.PlayerSignup("TP2", "Test_Player_2")
+  lm.PlayerSignup("TP3", "Test_Player_3")
+  lm.PlayerSignup("TP4", "Test_Player_4")
+  lm.PlayerSignup("TP5", "Test_Player_5")
+  lm.PlayerSignup("TP6", "Test_Player_6")
 end
 
 
