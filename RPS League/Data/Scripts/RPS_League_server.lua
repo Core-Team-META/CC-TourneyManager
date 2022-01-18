@@ -54,6 +54,11 @@ end
 
 
 
+function OnDebugReportMatches()
+  lm.DebugReportRandomScores(10)
+end
+
+
 
 
 Initialize()
@@ -63,3 +68,4 @@ Events.Connect("RPS_DebugReset", OnDebugReset)
 Events.Connect("RPS_Signup", OnPlayerSignup)
 Events.Connect("RPS_DebugOut", OnDebugOut)
 Events.Connect("RPS_DebugAdvance", OnDebugAdvance)
+Events.Connect("RPS_DebugReportMatches", OnDebugReportMatches)

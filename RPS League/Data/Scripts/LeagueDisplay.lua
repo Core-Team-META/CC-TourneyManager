@@ -3,6 +3,7 @@ local TEXT_PANEL = script:GetCustomProperty("TextPanel"):WaitForObject() ---@typ
 local _RICH_TEXT_MGR = script:GetCustomProperty("_RichTextMgr")
 local UICONTAINER = script:GetCustomProperty("UIContainer"):WaitForObject() ---@type UIContainer
 local TRIGGER = script:GetCustomProperty("Trigger"):WaitForObject() ---@type Trigger
+local STATE_TEXT = script:GetCustomProperty("StateText"):WaitForObject() ---@type UIText
 
 local rtm = require(_RICH_TEXT_MGR)
 
@@ -17,6 +18,15 @@ local LeagueState = {
   MATCHES_COMPLETE = 3,
   LEAGUE_COMPLETE = 4,
 }
+
+local LeagueStateText = {
+  [LeagueState.CLOSED] = "No leagues are active.",
+  [LeagueState.OPEN_FOR_ENTRY] = "League is open for signups!\n%s",
+  [LeagueState.MATCHES] = "Matches are in progress!\n%s",
+  [LeagueState.MATCHES_COMPLETE] = "Matches are complete.  Waiting for scores.",
+  [LeagueState.LEAGUE_COMPLETE] = "League is complete!",
+}
+
 
 local MatchResult = {
   INCOMPLETE = 1,
@@ -55,39 +65,35 @@ local text = [[
 
 function DisplayLeagueStatus()
   local data = player:GetPrivateNetworkedData("LG_PlayerData")
-  if data == nil or data.state == nil or data.state == LeagueState.CLOSED then
-    text = [[
-      <color yellow>No league active!</color>
-    ]]
-  elseif data.isInLeague then
+
+  local text = ""
+  if data == nil then
+    -- we dont' have data yet
+    return
+  end
+
+  if not data.isInLeague then
+    text = "<color yellow>You are not in any leagues!</color>"
+  else
     local playersToPlay = {}
     local seenPlayers = {}
 
-    print("eh?")
-    for k,match in pairs(data.matches) do
-      print("matches")
-      for kk, pid in pairs(match.playerIds) do
-        if player.id ~= pid then -- make sure it's someone else!
-          --print(kk, ":", pid)
-          if seenPlayers[pid] == nil then -- we haven't seen them yet
-            if not match.isComplete then
-              seenPlayers[pid] = MatchResult.INCOMPLETE
-            elseif match.playerScores[pid] < match.playerScores[player.id] then
-              seenPlayers[pid] = MatchResult.PLAYER_WON
-            elseif match.playerScores[pid] > match.playerScores[player.id] then
-              seenPlayers[pid] = MatchResult.PLAYER_LOST
-            else
-              seenPlayers[pid] = MatchResult.DRAW
-            end
-            table.insert(playersToPlay, pid)
-          end
-        end
+    for otherPid, score in pairs(data.matchData) do
+      table.insert(playersToPlay, otherPid)
+      if score == -1 then
+        seenPlayers[otherPid] = MatchResult.INCOMPLETE
+      elseif score == 1 then
+        seenPlayers[otherPid] = MatchResult.PLAYER_LOST
+      elseif score == 2 then
+        seenPlayers[otherPid] = MatchResult.PLAYER_WON
+      else
+        print("Weird score:", score)
       end
     end
 
     text = "<color green>Players left to play this league:</color>\n"
     for k,v in pairs(playersToPlay) do
-      print(v, ":", seenPlayers[v])
+      print(v, ":", seenPlayers[v], MatchColors[seenPlayers[v]])
       text = text .. string.format("\n<color %s>%s</color>",
           MatchColors[seenPlayers[v]], v)
     end
@@ -113,6 +119,51 @@ function OnEndOverlap(trigger, other)
   if other == player then
     UICONTAINER.visibility = Visibility.FORCE_OFF
   end
+end
+
+local SECONDS = 1
+local MINUTES = 60 * SECONDS
+local HOURS = 60 * MINUTES
+local DAYS = 24 * HOURS
+
+function PrettyTime(t)
+  local days = t // DAYS
+  t = t % DAYS
+  local hours = t // HOURS
+  t = t % HOURS
+  local minutes = t // MINUTES
+  t = t % MINUTES
+  local seconds = t // SECONDS
+  local result = ""
+  local forceDisplay = false
+
+  if days > 0 then
+    forceDisplay = true
+    result = result .. string.format("%02d:", days)
+  end
+  if hours > 0 or forceDisplay then
+    forceDisplay = true
+    result = result .. string.format("%02d:", hours)
+  end
+  if minutes > 0 or forceDisplay then
+    forceDisplay = true
+    result = result .. string.format("%02d:", minutes)
+  end
+
+  result = result .. string.format("%02d", seconds)
+
+  return result
+end
+
+
+function Tick()
+  local data = player:GetPrivateNetworkedData("LG_PlayerData")
+  if data ~= nil and data.stateEndTime ~= nil then
+    local timeRemaining = data.stateEndTime - os.time()
+    local timeRemainingText = PrettyTime(timeRemaining)
+    STATE_TEXT.text = string.format(LeagueStateText[data.state], timeRemainingText)
+  end
+  Task.Wait(1)
 end
 
 
