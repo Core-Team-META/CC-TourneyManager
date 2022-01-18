@@ -23,6 +23,7 @@ Objects {
   ChildIds: 1837897498902402300
   ChildIds: 16051411215998710975
   ChildIds: 15992148758007955753
+  ChildIds: 12877116572563031164
   UnregisteredParameters {
   }
   Collidable_v2 {
@@ -38,6 +39,52 @@ Objects {
   }
   NetworkRelevanceDistance {
     Value: "mc:eproxyrelevance:critical"
+  }
+}
+Objects {
+  Id: 12877116572563031164
+  Name: "RPS_MatchStage"
+  Transform {
+    Scale {
+      X: 1
+      Y: 1
+      Z: 1
+    }
+  }
+  ParentId: 4781671109827199097
+  WantsNetworking: true
+  TemplateInstance {
+    ParameterOverrideMap {
+      key: 8456419368000778161
+      value {
+        Overrides {
+          Name: "Name"
+          String: "RPS_MatchStage"
+        }
+        Overrides {
+          Name: "Position"
+          Vector {
+            X: 1310
+            Y: 1830
+            Z: 190
+          }
+        }
+      }
+    }
+    ParameterOverrideMap {
+      key: 12942976621477046322
+      value {
+        Overrides {
+          Name: "Visible"
+          Enum {
+            Value: "mc:evisibilitysetting:forceoff"
+          }
+        }
+      }
+    }
+    TemplateAsset {
+      Id: 5476186188111447366
+    }
   }
 }
 Objects {
@@ -1627,7 +1674,7 @@ Objects {
     Value: "mc:ecollisionsetting:inheritfromparent"
   }
   Visible_v2 {
-    Value: "mc:evisibilitysetting:inheritfromparent"
+    Value: "mc:evisibilitysetting:forceoff"
   }
   CameraCollidable {
     Value: "mc:ecollisionsetting:inheritfromparent"
