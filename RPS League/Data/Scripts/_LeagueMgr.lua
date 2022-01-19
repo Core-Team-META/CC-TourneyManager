@@ -205,8 +205,8 @@ end
 
 
 function GenerateNewMatches(leagueData)
+--[[
   print("Generating new matches!")
-
   for k,entry in pairs(leagueData.playerEntries) do
     entry.matchData = {}
     for k, entry2 in pairs(leagueData.playerEntries) do
@@ -215,6 +215,7 @@ function GenerateNewMatches(leagueData)
       end
     end
   end
+  ]]
 end
 
 
@@ -343,8 +344,7 @@ function API.ReportMatchResult(scoreTable)
       if playerEntry ~= nil then  -- playerEntry might be nil if they are not in the tourney
         for rank2, result2 in pairs(matchRankings) do
           -- only take first submitted score!
-          -- this might also be nil, if their opponent is not in the tourney.
-          if playerEntry.matchData[result2.pid] == -1 then
+          if playerEntry.matchData[result2.pid] == nil and result2.pid ~= result.pid then
             playerEntry.matchData[result2.pid] = result2.rank
             UpdatePlayerScore(leagueData, result2.pid)
           end
@@ -545,56 +545,6 @@ function StateTimeUp()
   end
   ]]
 end
-
---[[
-local AddPairToTable_data = {}
-function API.AddPairToTable(key, val, path, netref, ensureUnique)
-  local dataKey = key
-  local shouldStartRequest = false
-
-  if AddPairToTable_data[dataKey] == nil then
-    AddPairToTable_data[dataKey] = {}
-    shouldStartRequest = true
-  end
-
-  table.insert(AddPairToTable_data[dataKey], {k = key, v = val})
-  print("***********")
-  API.DisplayTable(AddPairToTable_data[dataKey])
-
-  if shouldStartRequest then
-    Task.Spawn(function()
-      local d, code, err
-      while true do
-        while Storage.HasPendingSetConcurrentCreatorData(netref) do
-          Task.Wait()
-        end
-
-        d, code, err = Storage.SetConcurrentCreatorData(netref, function(data)
-          local tableToModify = EvaluatePath(data, path)
-          for k,v in pairs(AddPairToTable_data[dataKey]) do
-            if not (ensureUnique and tableToModify[v.k] ~= nil) then
-              tableToModify[v.k] = v.v
-            else
-              print("Blocked becuse not unique")
-            end
-          end
-
-          return data
-        end)
-        if code == StorageResultCode.SUCCESS then 
-          print("successful write!")
-          AddPairToTable_data = {}
-          return
-        else
-          warn("Could not write data: (pairs) " .. tostring(code) .. " " .. err)
-        end
-      end
-    end)
-  end
-
-end
-
-]]
 
 
 
