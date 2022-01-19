@@ -36,14 +36,14 @@ function OnPlayerSignup(player)
   elseif signupResult == 2 then
     Events.BroadcastToPlayer(player, "RPS_PMP", "INPROG")
   end
-  --[[
+  
   lm.PlayerSignup("TP1", "Test_Player_1")
   lm.PlayerSignup("TP2", "Test_Player_2")
   lm.PlayerSignup("TP3", "Test_Player_3")
   lm.PlayerSignup("TP4", "Test_Player_4")
   lm.PlayerSignup("TP5", "Test_Player_5")
   lm.PlayerSignup("TP6", "Test_Player_6")
-  ]]
+  
 end
 
 

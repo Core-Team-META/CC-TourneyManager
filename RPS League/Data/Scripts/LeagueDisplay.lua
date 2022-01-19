@@ -15,15 +15,16 @@ local LeagueState = {
   CLOSED = 0,
   OPEN_FOR_ENTRY = 1,
   MATCHES = 2,
-  MATCHES_COMPLETE = 3,
+  LEAGUE_DOESNT_EXIST = 3,
   LEAGUE_COMPLETE = 4,
+
 }
 
 local LeagueStateText = {
   [LeagueState.CLOSED] = "No leagues are active.",
   [LeagueState.OPEN_FOR_ENTRY] = "League is open for signups!\n%s",
   [LeagueState.MATCHES] = "Matches are in progress!\n%s",
-  [LeagueState.MATCHES_COMPLETE] = "Matches are complete.  Waiting for scores.",
+  [LeagueState.LEAGUE_DOESNT_EXIST] = "There is no league to join.",
   [LeagueState.LEAGUE_COMPLETE] = "League is complete!",
 }
 
@@ -85,8 +86,13 @@ function DisplayLeagueStatus()
       local playersToPlay = {}
       local seenPlayers = {}
 
-      for otherPid, score in pairs(data.matchData) do
-        table.insert(playersToPlay, otherPid)
+      for k, entry in pairs(data.playerEntries) do
+        local otherPid = entry.playerId
+        local score = data.matchData[otherPid]
+        --print("--", otherPid)
+        --for k,v in pairs(data.matchData) do print(k,v) end
+      --for otherPid, score in pairs(data.matchData) do
+        table.insert(playersToPlay, {pid = otherPid, name = entry.name})
         if score == -1 then
           seenPlayers[otherPid] = MatchResult.INCOMPLETE
         elseif score == 1 then
@@ -98,14 +104,14 @@ function DisplayLeagueStatus()
         end
       end
 
-      text = "<color green>Players left to play this league:\n</color><panel 600>"
-      for k,v in pairs(playersToPlay) do
-        print(v, ":", seenPlayers[v], MatchColors[seenPlayers[v]])
+      text = "<color green>Players in this league:\n</color><panel 600>"
+      for k,pdata in pairs(playersToPlay) do
+        print(pdata.pid, ":", seenPlayers[pdata.pid], MatchColors[seenPlayers[pdata.pid]])
         text = text .. string.format("\n<color %s>%s</color>",
-            MatchColors[seenPlayers[v]], v)
-        if seenPlayers[v] == MatchResult.PLAYER_WON then
+            MatchColors[seenPlayers[pdata.pid]] or Color.WHITE, pdata.name)
+        if seenPlayers[pdata.pid] == MatchResult.PLAYER_WON then
           text = text .. " (win)"
-        elseif seenPlayers[v] == MatchResult.PLAYER_LOST then
+        elseif seenPlayers[pdata.pid] == MatchResult.PLAYER_LOST then
           text = text .. " (loss)"
         end
 

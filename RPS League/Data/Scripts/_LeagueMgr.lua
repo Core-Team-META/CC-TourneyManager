@@ -165,6 +165,7 @@ end
 -- util function for finding an entry based on pid.
 function GetPlayerEntry(leagueData, pid)
   --print(CoreDebug.GetStackTrace())
+  if leagueData == nil then return nil end
   if leagueData.playerEntries ~= nil then
     for k,entry in pairs(leagueData.playerEntries) do
       if pid == entry.playerId then return entry end
@@ -225,7 +226,8 @@ function UpdateAllClientData()
 end
 
 function UpdateClientData(p, leagueData)
-  print("Updating client data for", p.name, leagueData.state)
+  --print("Updating client data for", p.name, leagueData.state)
+  if leagueData == nil then return end
   local isInLeague = API.IsPlayerInLeague(p.id)
   local matches = {}
   local score = nil
@@ -273,6 +275,11 @@ function API.PlayerSignup(playerId, playerName)
 
   cu.WriteCCDataYield(netref, function(data)
     local leagueData = data.leagueData
+    if leagueData == nil then 
+      warn("League data is nil")
+      result = 3
+      return data
+    end
 
     for k,v in pairs(leagueData.playerEntries) do
       if v.playerId == playerId then
